@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using PalmSens.Plottables;
 using PalmSens.Data;
@@ -1024,6 +1023,55 @@ namespace PalmSens.Core.Simplified.Data
             Curve.NewDataAdded -= Curve_NewDataAdded;
             Curve.Finished -= Curve_Finished;
             Curve.Dispose();
+        }
+
+        /// <summary>
+        /// Used to set the value of the data points for TESTING purposes
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="xValue"></param>
+        /// <param name="yValue"></param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public void SetValue(int index, double xValue, double yValue)
+        {
+            if (index < 0 || index >= NDataPoints)
+                throw new ArgumentOutOfRangeException("Index is out of range.");
+
+            Curve.XAxisDataArray[index].Value = xValue;
+            Curve.YAxisDataArray[index].Value = yValue;
+        }
+
+        /// <summary>
+        /// Wipes all data points, setting them to zero.
+        /// </summary>
+        public void WipeDataPoints()
+        {
+            // Create empty DataArray objects
+            DataArray emptyXDataArray = new DataArray("", Curve.XUnit, Curve.XArrayType);
+            DataArray emptyYDataArray = new DataArray("", Curve.YUnit, Curve.YArrayType);
+
+            // Assign a new Curve with the empty DataArray objects
+            Curve = new Curve(emptyXDataArray, emptyYDataArray, "Curve", true);
+        }
+
+        /// <summary>
+        /// Adds data to the SimpleCurve
+        /// </summary>
+        /// <param name="add"></param>
+        public void AddCustom(SimpleCurve add)
+        {
+
+
+            for (int i = 0; i < add.NDataPoints; i++)
+            {
+                var xVal = add.XAxisValues[i];
+                var xData = new DataValue(xVal);
+                Curve.XAxisDataArray.Add(xData);
+
+                var yVal = add.YAxisValues[i];
+                var yData = new DataValue(yVal);
+                Curve.YAxisDataArray.Add(yData);
+            }
         }
     }
 }

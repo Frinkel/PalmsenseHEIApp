@@ -54,6 +54,7 @@
                     Text="{xct:Translate ResultFor}"
                     VerticalOptions="Start" />
                 <Label Style="{StaticResource SmallTextStyle}" Text="{Binding LoadedMeasurement.Name}" />
+                <Label Style="{StaticResource SmallTextStyle}" Text="Data View" />
 
                 <Label
                     Margin="0,30,0,0"

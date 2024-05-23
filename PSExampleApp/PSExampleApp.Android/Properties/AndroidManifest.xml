@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="3" android:versionName="1.2" package="com.PalmSens.PSExampleApp" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="27" android:targetSdkVersion="33" />
-	<application android:label="PSExampleApp" android:theme="@style/MainTheme" android:exported="true" android:icon="@mipmap/ic_launcher"></application>
+	<application android:label="PSExampleApp" android:theme="@style/MainTheme" android:exported="true" android:icon="@mipmap/ic_launcher">
+	</application>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />

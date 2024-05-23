@@ -17,6 +17,7 @@
         ConfigureTitleView,
         SettingsView,
         SelectMeasurementView,
-        LoginView
+        LoginView,
+        HeiView
     }
 }

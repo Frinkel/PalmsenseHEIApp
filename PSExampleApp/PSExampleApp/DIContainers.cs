@@ -31,6 +31,7 @@ namespace PSExampleApp.Forms
             services.AddTransient<HomeViewModel>();
             services.AddTransient<AddUserViewModel>();
             services.AddTransient<LoginViewModel>();
+            services.AddTransient<HeiViewModel>();
             services.AddTransient<SelectDeviceViewModel>();
             services.AddTransient<PrepareMeasurementViewModel>();
             services.AddTransient<SettingsViewModel>();

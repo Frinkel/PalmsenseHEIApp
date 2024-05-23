@@ -95,6 +95,9 @@
     <Compile Update="Styles\Generic.xaml.cs">
       <DependentUpon>Generic.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\HeiView.xaml.cs">
+      <DependentUpon>HeiView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\SelectAnalyteView.xaml.cs">
       <DependentUpon>SelectAnalyteView.xaml</DependentUpon>
     </Compile>

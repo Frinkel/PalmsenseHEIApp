@@ -27,6 +27,7 @@ namespace PSExampleApp.Forms.ViewModels
             OnPageAppearingCommand = CommandFactory.Create(OnPageAppearing);
             OpenMeasurementListCommand = CommandFactory.Create(OpenMeasurementList);
             OpenLoginPopupCommand = CommandFactory.Create(OpenLoginPopup);
+            OpenHeiCommand = CommandFactory.Create(OpenHeiView);
             StartMeasurementCommand = CommandFactory.Create(StartMeasurement);
             ConfigureApplicationCommand = CommandFactory.Create(ConfigureApplication);
             _measurementService = measurementService;
@@ -40,6 +41,7 @@ namespace PSExampleApp.Forms.ViewModels
         public ICommand OnPageAppearingCommand { get; set; }
         public ICommand OnPageDisappearingCommand { get; set; }
         public ICommand OpenLoginPopupCommand { get; }
+        public ICommand OpenHeiCommand { get; }
         public ICommand OpenMeasurementListCommand { get; }
         public ICommand StartMeasurementCommand { get; }
 
@@ -89,6 +91,11 @@ namespace PSExampleApp.Forms.ViewModels
         private async Task StartMeasurement()
         {
             await NavigationDispatcher.Push(NavigationViewType.SelectDeviceView);
+        }
+
+        private async Task OpenHeiView()
+        {
+            await NavigationDispatcher.Push(NavigationViewType.HeiView);
         }
     }
 }

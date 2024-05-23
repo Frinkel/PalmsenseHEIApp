@@ -6,6 +6,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Forms;
+using PalmSens.Core.Simplified.XF.Application.Services;
+
 
 namespace PalmSens.Core.Simplified.XF.Application.Services
 {
@@ -89,5 +92,41 @@ namespace PalmSens.Core.Simplified.XF.Application.Services
                 throw;
             }
         }
+
+        /// <summary>
+        /// Loads a SimpleMeasurement from a .pssession file located in the Android assets folder.
+        /// </summary>
+        /// <param name="assetName">The filename of the .pssession file in the assets folder.</param>
+        /// <returns>A task that represents the asynchronous operation, containing the loaded SimpleMeasurement.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the asset is not found.</exception>
+        /// <exception cref="Exception">A general exception for other errors.</exception>
+        public async Task<SimpleMeasurement> LoadMeasurementFromAssetAsync(string assetName)
+        {
+            var assetService = DependencyService.Get<ILoadAssetsService>();
+            if (assetService == null)
+            {
+                throw new InvalidOperationException("Asset service not available");
+            }
+
+            try
+            {
+                using (var streamReader = assetService.LoadFile(assetName))
+                {
+                    if (streamReader == null || !streamReader.BaseStream.CanRead)
+                    {
+                        throw new FileNotFoundException("Unable to open file stream for reading.", assetName);
+                    }
+
+                    var measurement = LoadMeasurement(streamReader.BaseStream);
+                    return measurement;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log exception details here if you have a logging mechanism
+                throw new Exception($"Failed to load the measurement from asset '{assetName}': {ex.Message}", ex);
+            }
+        }
+
     }
 }
