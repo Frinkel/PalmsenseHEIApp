@@ -53,6 +53,13 @@
                 <Switch 
                     HorizontalOptions="EndAndExpand" 
                     IsToggled="{Binding IsAdmin}" />
+                <Label
+                    HorizontalOptions="StartAndExpand"
+                    Style="{StaticResource SmallTextStyle}"
+                    Text="Use Mock Data" />
+                <Switch 
+                    HorizontalOptions="EndAndExpand" 
+                    IsToggled="{Binding UseMockData}" />
             </StackLayout>
             <ContentView
                 Grid.Column="0"

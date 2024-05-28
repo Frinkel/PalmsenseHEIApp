@@ -8,6 +8,7 @@ using PalmSens.Core.Simplified.Data;
 using PSExampleApp.Common.Models;
 using PSExampleApp.Core.Services;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.ObjectModel;
@@ -17,12 +18,14 @@ namespace PSExampleApp.Forms.ViewModels
     public class MeasurementPlotViewModel : BaseAppViewModel
     {
         private readonly IMeasurementService _measurementService;
+        private readonly IUserService _userService;
         private LineSeries _lineSeries;
         private SimpleCurve _simpleCurve;
 
-        public MeasurementPlotViewModel(IMeasurementService measurementService, IAppConfigurationService appConfigurationService) : base(appConfigurationService)
+        public MeasurementPlotViewModel(IUserService userService, IMeasurementService measurementService, IAppConfigurationService appConfigurationService) : base(appConfigurationService)
         {
             _measurementService = measurementService;
+            _userService = userService;
             OnPageAppearingCommand = CommandFactory.Create(OnPageAppearing);
         }
 
@@ -76,11 +79,27 @@ namespace PSExampleApp.Forms.ViewModels
             PlotModel.Series.Add(peakLines);
         }
 
-        private void OnPageAppearing()
+        private async void OnPageAppearing()
         {
             ActiveMeasurement = _measurementService.ActiveMeasurement;
 
-            _simpleCurve = ActiveMeasurement.Measurement.SimpleCurveCollection.First();
+            // Custom check to figure gather the newest active measurement if there's none in the measurement service
+            if (ActiveMeasurement == null)
+            {
+                var measurementdId = _userService.ActiveUser.Measurements.OrderByDescending(m => m.MeasurementDate).FirstOrDefault().Id;
+                ActiveMeasurement = await _measurementService.LoadMeasurement(measurementdId);
+            }
+
+            try
+            {
+                _simpleCurve = ActiveMeasurement.Measurement.SimpleCurveCollection.First();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error getting the curve from the measurement: {ex.Message}");
+                throw new Exception(ex.Message);
+            }
+
 
             double[] x = _simpleCurve.XAxisValues;
             double[] y = _simpleCurve.YAxisValues;

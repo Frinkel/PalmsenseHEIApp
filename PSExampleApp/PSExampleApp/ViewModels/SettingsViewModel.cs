@@ -14,6 +14,7 @@ namespace PSExampleApp.Forms.ViewModels
     {
         private readonly IUserService _userService;
         private bool _isAdmin;
+        private bool _useMockData;
         private Language _language;
         private bool _settingsChanged;
 
@@ -24,6 +25,7 @@ namespace PSExampleApp.Forms.ViewModels
             if (_userService?.ActiveUser != null)
             {
                 IsAdmin = _userService.ActiveUser.IsAdmin;
+                UseMockData = _userService.ActiveUser.UseMockData;
             }
 
             OnPageDisappearingCommand = CommandFactory.Create(OnDisappearing);
@@ -36,6 +38,17 @@ namespace PSExampleApp.Forms.ViewModels
             {
                 _isAdmin = value;
                 _userService.ActiveUser.IsAdmin = value;
+                _settingsChanged = true;
+            }
+        }
+
+        public bool UseMockData
+        {
+            get => _useMockData;
+            set
+            {
+                _useMockData = value;
+                _userService.ActiveUser.UseMockData = value;
                 _settingsChanged = true;
             }
         }

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:PSExampleApp.Forms.Behaviors"
+             xmlns:local="clr-namespace:PSExampleApp.Forms.Converters"
+             xmlns:models="clr-namespace:PSExampleApp.Common.Models;assembly=PSExampleApp.Common"
+             xmlns:views="clr-namespace:PSExampleApp.Forms.Views"
+             xmlns:viewmodels="clr-namespace:PSExampleApp.Forms.ViewModels"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:helpers="clr-namespace:PSExampleApp.Core.Helpers;assembly=PSExampleApp.Core"
+             x:DataType="viewmodels:MockDataViewModel"
+             x:Class="PSExampleApp.Forms.Views.MockDataView"
+             Style="{StaticResource CustomPage}">
+
+    <ContentPage.Behaviors>
+        <behaviors:OnAppearingBehavior OnAppearingCommand="{Binding OnPageAppearingCommand}" />
+        <behaviors:OnDisappearingBehavior OnDisappearingCommand="{Binding OnPageDisappearingCommand}" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+            <local:EnumBooleanConverter x:Key="enumToBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BackgroundImageSource>
+        <Binding Path="BackgroundImage" Converter="{StaticResource ByteArrayToImageSourceConverter}" />
+    </ContentPage.BackgroundImageSource>
+
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <!-- Flexible space above -->
+                <RowDefinition Height="Auto" />
+                <!-- Space for the label -->
+                <RowDefinition Height="*" />
+                <!-- Flexible space below -->
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <!-- Flexible space to the left -->
+                <ColumnDefinition Width="Auto" />
+                <!-- Space for the label -->
+                <ColumnDefinition Width="*" />
+                <!-- Flexible space to the right -->
+            </Grid.ColumnDefinitions>
+
+            <!-- Label centered in the middle of the view -->
+            <Label Grid.Row="1" Grid.Column="1" Text="Mock Data View" 
+                   HorizontalOptions="Center" VerticalOptions="Center"
+                   TextColor="White" Style="{StaticResource MediumTextStyle}" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

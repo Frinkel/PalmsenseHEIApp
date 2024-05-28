@@ -36,7 +36,7 @@ namespace PSExampleApp.Forms.ViewModels
         private int _progressPercentage;
 
         //private bool UseMockData = false;
-        public bool UseMockData { get; set; } = true;
+        public bool UseMockData { get; set; } = false;
         public int DataReceivedCount { get; set; } = 0;
 
         public RunMeasurementViewModel(IMeasurementService measurementService, IMessageService messageService, IDeviceService deviceService, IAppConfigurationService appConfigurationService, ILoadSavePlatformService loadSavePlatformService) : base(appConfigurationService)

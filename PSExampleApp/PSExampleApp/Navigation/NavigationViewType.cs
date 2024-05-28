@@ -18,6 +18,7 @@
         SettingsView,
         SelectMeasurementView,
         LoginView,
-        HeiView
+        MockDataView,
+        HeiView,
     }
 }
