@@ -11,6 +11,7 @@
              xmlns:helpers="clr-namespace:PSExampleApp.Core.Helpers;assembly=PSExampleApp.Core"
              x:DataType="viewmodels:HeiViewModel"
              x:Class="PSExampleApp.Forms.Views.HeiView"
+             NavigationPage.HasBackButton="False"
              Style="{StaticResource CustomPage}">
 
     <!--<ContentPage.Behaviors>
@@ -30,28 +31,30 @@
     </ContentPage.BackgroundImageSource>
 
     <ContentPage.Content>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <!-- Flexible space above -->
-                <RowDefinition Height="Auto" />
-                <!-- Space for the label -->
-                <RowDefinition Height="*" />
-                <!-- Flexible space below -->
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <!-- Flexible space to the left -->
-                <ColumnDefinition Width="Auto" />
-                <!-- Space for the label -->
-                <ColumnDefinition Width="*" />
-                <!-- Flexible space to the right -->
-            </Grid.ColumnDefinitions>
+        <StackLayout Spacing="20" Padding="20" VerticalOptions="CenterAndExpand">
+            <StackLayout>
+                
+                <!--<Label
+                    Style="{StaticResource SmallTextStyle}"
+                    Text="{xct:Translate ResultFor}"
+                    VerticalOptions="Start"
+                    Margin="0,0,0,10" />-->
+                <Label
+                    Style="{StaticResource SmallTextStyle}"
+                    Text="{Binding ActiveMeasurement.Name}"
+                    Margin="0,0,0,10" />
 
-            <!-- Label centered in the middle of the view -->
-            <Label Grid.Row="1" Grid.Column="1" Text="20%" 
-                   HorizontalOptions="Center" VerticalOptions="Center"
-                   TextColor="White" Style="{StaticResource MediumTextStyle}" />
-        </Grid>
+                <Label
+                    Style="{StaticResource LargeTextStyle}"
+                    Text="{Binding ViewFriendlyConcentration}"
+                    Margin="0,20,0,20" />
+            </StackLayout>
+
+            <Button
+                Command="{Binding NavigateToHomeCommand}"
+                HorizontalOptions="Center"
+                Text="{xct:Translate Home}"
+                WidthRequest="200" />
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -157,6 +157,7 @@ namespace PSExampleApp.Core.Services
                 MeasurementImages = savedMeasurement.SaveImages,
                 Id = id,
                 Name = savedMeasurement.Name,
+                HeiConcentration = savedMeasurement.HeiConcentration,
             };
 
             using (var stream = new MemoryStream(savedMeasurement.SerializedMeasurement))
@@ -201,6 +202,7 @@ namespace PSExampleApp.Core.Services
                 Configuration = measurement.Configuration,
                 Id = measurement.Id,
                 Name = measurement.Name,
+                HeiConcentration = measurement.HeiConcentration,
             };
 
             try
@@ -224,6 +226,23 @@ namespace PSExampleApp.Core.Services
         {
             _instrumentService.InitializeInstrument(method);
             return await _instrumentService.MeasureAsync(method);
+        }
+
+        /// <summary>
+        /// Loads the current active measurement, if there is none set, we set it by loading the latest measurement.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<HeavyMetalMeasurement> GetActiveMeasurement()
+        {
+            // Custom check to figure gather the newest active measurement if there's none in the measurement service
+            if (ActiveMeasurement == null)
+            {
+                var measurementdId = _userService.ActiveUser.Measurements.OrderByDescending(m => m.MeasurementDate).FirstOrDefault().Id;
+                ActiveMeasurement = await LoadMeasurement(measurementdId);
+                _activeMeasurement = ActiveMeasurement;
+            }
+            
+            return _activeMeasurement;
         }
     }
 }

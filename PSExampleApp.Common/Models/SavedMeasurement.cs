@@ -26,5 +26,10 @@ namespace PSExampleApp.Common.Models
         /// Gets or sets the serialized simple measurement with data containing from the palmsense core measurement. This part is serialized to byte array and can be deserialized using the LoadSaveHelper functions.
         /// </summary>
         public byte[] SerializedMeasurement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the concentration used by Hei Theraputics
+        /// </summary>
+        public double HeiConcentration { get; set; }
     }
 }

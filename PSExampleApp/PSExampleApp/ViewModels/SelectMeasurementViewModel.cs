@@ -68,7 +68,8 @@ namespace PSExampleApp.Forms.ViewModels
             try
             {
                 await _measurementService.LoadMeasurement(info.Id);
-                await NavigationDispatcher.Push(NavigationViewType.MeasurementDataView);
+                await NavigationDispatcher.Push(NavigationViewType.HeiView);
+                //await NavigationDispatcher.Push(NavigationViewType.MeasurementDataView);
             }
             catch (System.Exception ex)
             {

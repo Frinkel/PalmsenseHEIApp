@@ -123,7 +123,6 @@ namespace PalmSens.Core.Simplified.XF.Application.Services
             }
             catch (Exception ex)
             {
-                // Log exception details here if you have a logging mechanism
                 throw new Exception($"Failed to load the measurement from asset '{assetName}': {ex.Message}", ex);
             }
         }

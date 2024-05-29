@@ -96,5 +96,7 @@ namespace PSExampleApp.Core.Services
         public Task SaveMeasurementConfiguration(MeasurementConfiguration configuration);
 
         public Task<SimpleMeasurement> StartMeasurement(Method method);
+
+        public Task<HeavyMetalMeasurement> GetActiveMeasurement();
     }
 }

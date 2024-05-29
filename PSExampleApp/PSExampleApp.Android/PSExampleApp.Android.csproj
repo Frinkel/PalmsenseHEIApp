@@ -80,6 +80,9 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="NLog">
+      <Version>5.3.2</Version>
+    </PackageReference>
     <PackageReference Include="OxyPlot.Xamarin.Forms">
       <Version>2.1.0</Version>
     </PackageReference>
@@ -129,6 +132,8 @@
     <AndroidAsset Include="Assets\DPVexample.pssession" />
     <AndroidAsset Include="Assets\EIS_HEI_2.pssession" />
     <AndroidAsset Include="Assets\EISdummy.pssession" />
+    <AndroidAsset Include="Assets\AllDataExperiment273.pssession" />
+    <None Include="NLog.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />

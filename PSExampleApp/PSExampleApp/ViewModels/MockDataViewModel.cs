@@ -1,20 +1,20 @@
-﻿using PalmSens.Comm;
-using PalmSens.Core.Simplified.Data;
+﻿using PalmSens.Core.Simplified.Data;
 using PalmSens.Core.Simplified.XF.Application.Services;
-using PalmSens.Plottables;
+using PalmSens.Data;
 using PSExampleApp.Common.Models;
 using PSExampleApp.Core.Services;
 using PSExampleApp.Forms.Navigation;
-using PSExampleApp.Forms.Resx;
 using Rg.Plugins.Popup.Contracts;
 using Rg.Plugins.Popup.Services;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Org.BouncyCastle.Crypto.Engines;
 using Xamarin.CommunityToolkit.ObjectModel;
 
 namespace PSExampleApp.Forms.ViewModels
@@ -30,6 +30,8 @@ namespace PSExampleApp.Forms.ViewModels
         private bool _measurementFinished = false;
         private double _progress;
         private int _progressPercentage;
+
+        private string mockDataFile = "AllDataExperiment273.pssession";
 
         public MockDataViewModel(
             IMeasurementService measurementService,
@@ -86,16 +88,19 @@ namespace PSExampleApp.Forms.ViewModels
             set => SetProperty(ref _progressPercentage, value);
         }
 
-        public ObservableCollection<string> ReceivedData { get; set; } = new ObservableCollection<string>();
-
         private async Task LoadMockData()
         {
             try
             {
-                SimpleMeasurement mockMeasurement = await _loadSavePlatformService.LoadMeasurementFromAssetAsync("EIS_HEI_2.pssession");
+                SimpleMeasurement mockMeasurement = await _loadSavePlatformService.LoadMeasurementFromAssetAsync(mockDataFile);
 
                 ActiveMeasurement = MockHeavyMetalMeasurement(mockMeasurement);
-                
+
+                double targetFrequency = 126.0;
+                var impedanceValue = GetValuesFromTargetFreq(targetFrequency);
+                double concentration = CalculateConcentration(impedanceValue);
+                ActiveMeasurement.HeiConcentration = concentration;
+
                 if (mockMeasurement != null && mockMeasurement.SimpleCurveCollection != null)
                 {
                     foreach (var curve in mockMeasurement.SimpleCurveCollection)
@@ -103,22 +108,81 @@ namespace PSExampleApp.Forms.ViewModels
                         if (_activeCurve == null)
                         {
                             _activeCurve = curve;
+                            for (int i = 0; i < curve.NDataPoints; i++)
+                            {
+                                double xValue = _activeCurve.XAxisValue(i); //Get the value on Curve's X-Axis (potential) at the specified index
+                                double yValue = _activeCurve.YAxisValue(i); //Get the value on Curve's Y-Axis (current) at the specified index
+
+                                Debug.WriteLine($"Data received potential {xValue}, current {yValue}");
+                            }
                         }
                         else
                         {
-                            _activeCurve.AddCustom(curve);
+                            _activeCurve.AddCustom(curve); // <- custom functionality to add data values to a SimpleCurve
                         }
                     }
-                    ProcessMockData(_activeCurve);
+
+                    MeasurementIsFinished = true;
+                    Progress = 1;
+                    ProgressPercentage = 100;
+                    //ProcessMockData(_activeCurve);
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error loading mock data: {ex.Message}");
                 Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
-                if (ex.InnerException != null)
-                    Debug.WriteLine($"Inner Exception: {ex.InnerException.Message}");
             }
+        }
+
+        private double GetValuesFromTargetFreq(double targetFrequency)
+        {
+            var baseArray = ActiveMeasurement.Measurement.Measurement.EISdata.FirstOrDefault().EISDataSet.GetDataArrays();
+            var frequencyArray = baseArray.FirstOrDefault(a => a.ArrayType == 5);
+            var impedanceArray = baseArray.FirstOrDefault(a => a.ArrayType == 10);
+            var phaseArray = baseArray.FirstOrDefault(a => a.ArrayType == 6);
+
+            if (frequencyArray == null || impedanceArray == null || phaseArray == null)
+            {
+                Debug.WriteLine("One or more required data arrays are missing.");
+                throw new Exception("One or more required data arrays are missing.");
+            }
+
+            double[] frequencyValues = frequencyArray.GetValues();
+
+            int index = Array.FindIndex(frequencyValues, freq => Math.Floor(freq) == targetFrequency);
+
+            if (index != -1)
+            {
+                Debug.WriteLine($"Index of target frequency ({targetFrequency} Hz): {index}");
+
+                // Retrieve corresponding impedance and phase values using the index
+                double[] impedanceData = impedanceArray.GetValues();
+                double[] phaseData = phaseArray.GetValues();
+
+                if (index < impedanceData.Length && index < phaseData.Length)
+                {
+                    double impedanceValue = impedanceData[index];
+                    double phaseValue = phaseData[index];
+                    Debug.WriteLine($"At {targetFrequency} Hz, Impedance (|Z|): {impedanceValue}, Phase: {phaseValue} degrees");
+                    return impedanceValue;
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"Frequency {targetFrequency} Hz not found.");
+                throw new Exception($"Frequency {targetFrequency} Hz not found.");
+            }
+
+            throw new Exception("Target frequency calculation error.");
+        }
+
+        private double CalculateConcentration(double impedanceValue)
+        {
+            // Formula: x = (y - 0.01696) / 0.02704
+
+            double concentration = (impedanceValue - 0.01696) / 0.02704;
+            return concentration;
         }
 
         private async Task Continue()
@@ -126,7 +190,7 @@ namespace PSExampleApp.Forms.ViewModels
             //The continue will trigger the save of the measurement. //TODO maybe add cancel in case user doesn't want to save
             ActiveMeasurement.MeasurementDate = DateTime.Now.Date;
             await _measurementService.SaveMeasurement(ActiveMeasurement);
-            await NavigationDispatcher.Push(NavigationViewType.MeasurementFinishedView);
+            await NavigationDispatcher.Push(NavigationViewType.HeiView);
         }
 
         private HeavyMetalMeasurement MockHeavyMetalMeasurement(SimpleMeasurement mockMeasurement)
@@ -138,8 +202,8 @@ namespace PSExampleApp.Forms.ViewModels
             {
                 Name = uniqueName,
                 Id = Guid.NewGuid(),
-                Concentration = 0.0, // Set a mock concentration value
-                Configuration = new MeasurementConfiguration(), // Initialize with a default or mock configuration
+                Concentration = 0.0,
+                Configuration = new MeasurementConfiguration(),
                 Measurement = mockMeasurement,
                 MeasurementDate = DateTime.Now,
                 MeasurementImages = new List<byte[]>()
@@ -195,10 +259,8 @@ namespace PSExampleApp.Forms.ViewModels
 
         private void Curve_DetectedPeaks(object sender, EventArgs e)
         {
-            // Assuming _measurementService.CalculateConcentration() is available and used here
             _measurementService.CalculateConcentration();
 
-            // After the concentration is calculated we allow the user to press continue
             MeasurementIsFinished = true;
             Progress = 1;
             ProgressPercentage = 100;

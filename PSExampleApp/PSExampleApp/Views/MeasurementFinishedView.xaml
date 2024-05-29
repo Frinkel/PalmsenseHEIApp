@@ -54,7 +54,8 @@
                     Text="{xct:Translate ResultFor}"
                     VerticalOptions="Start" />
                 <Label Style="{StaticResource SmallTextStyle}" Text="{Binding ActiveMeasurement.Name}" />
-                <Label Style="{StaticResource SmallTextStyle}" Text="HEI EXAMPLE" />
+                <!--<Label Style="{StaticResource SmallTextStyle}" Text="HEI EXAMPLE" />
+                <Label Style="{StaticResource SmallTextStyle}" Text="{Binding ActiveMeasurement.HeiConcentration}"/>-->
 
                 <Label
                     Margin="0,30,0,0"

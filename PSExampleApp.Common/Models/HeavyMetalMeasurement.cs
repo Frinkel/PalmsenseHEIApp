@@ -33,5 +33,10 @@
         /// Gets or sets the serialized measurement images
         /// </summary>
         public List<byte[]> MeasurementImages { get; set; } = new List<byte[]>();
+
+        /// <summary>
+        /// Gets or sets the concentration used by Hei Theraputics
+        /// </summary>
+        public double HeiConcentration { get; set; }
     }
 }

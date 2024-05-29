@@ -33,7 +33,10 @@ namespace PSExampleApp.Forms.ViewModels
             _popupNavigation = PopupNavigation.Instance;
             _measurementService = measurementService;
             _messageService = messageService;
-            ActiveMeasurement = _measurementService.ActiveMeasurement;
+            //ActiveMeasurement = _measurementService.GetActiveMeasurement().ConfigureAwait(false).GetAwaiter();
+            //InitializeActiveMeasurement();
+            Task.Run(() => this.InitializeActiveMeasurement()).Wait();
+
 
             ShowPlotCommand = CommandFactory.Create(async () => await NavigationDispatcher.Push(NavigationViewType.MeasurementPlotView));
             NavigateToHomeCommand = CommandFactory.Create(NavigateToHome);
@@ -45,7 +48,12 @@ namespace PSExampleApp.Forms.ViewModels
             OnPageDisappearingCommand = CommandFactory.Create(OnDisappearing);
         }
 
-        public HeavyMetalMeasurement ActiveMeasurement { get; }
+        public HeavyMetalMeasurement ActiveMeasurement { get; set; }
+
+        private async void InitializeActiveMeasurement()
+        {
+            ActiveMeasurement = await _measurementService.GetActiveMeasurement().ConfigureAwait(false);
+        }
 
         /// <summary>
         /// Gets if the measurement has a maximum amount of photos. This is 3
