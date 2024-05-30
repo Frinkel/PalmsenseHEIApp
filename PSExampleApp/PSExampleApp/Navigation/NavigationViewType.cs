@@ -21,5 +21,6 @@
         MockDataView,
         HeiView,
         QRCodeScannerPage,
+        MeasurementHistoryPlotView,
     }
 }

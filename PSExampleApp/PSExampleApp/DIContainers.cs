@@ -4,6 +4,7 @@ using PSExampleApp.Core.DataAccess;
 using PSExampleApp.Core.Repositories;
 using PSExampleApp.Core.Services;
 using PSExampleApp.Forms.ViewModels;
+using PSExampleApp.Forms.Views;
 using Xamarin.Forms;
 
 namespace PSExampleApp.Forms
@@ -32,6 +33,7 @@ namespace PSExampleApp.Forms
             services.AddTransient<AddUserViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<HeiViewModel>();
+            services.AddTransient<MeasurementHistoryPlotViewModel>();
             services.AddTransient<MockDataViewModel>();
             services.AddTransient<QRCodeScannerViewModel>();
             services.AddTransient<SelectDeviceViewModel>();

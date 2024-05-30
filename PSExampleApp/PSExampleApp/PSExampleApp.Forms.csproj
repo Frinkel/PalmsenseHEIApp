@@ -96,6 +96,9 @@
     <Compile Update="Styles\Generic.xaml.cs">
       <DependentUpon>Generic.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\MeasurementHistoryPlotView.xaml.cs">
+      <DependentUpon>MeasurementHistoryPlotView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\QRCodeScannerPage.xaml.cs">
       <DependentUpon>QRCodeScannerPage.xaml</DependentUpon>
     </Compile>

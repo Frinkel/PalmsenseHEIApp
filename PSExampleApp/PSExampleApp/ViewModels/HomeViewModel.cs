@@ -32,6 +32,7 @@ namespace PSExampleApp.Forms.ViewModels
             StartMeasurementCommand = CommandFactory.Create(StartMeasurement);
             ConfigureApplicationCommand = CommandFactory.Create(ConfigureApplication);
             OpenQRScannerCommand = CommandFactory.Create(OpenQRScanner);
+            OpenMeasurementHistoryPlotCommand = CommandFactory.Create(OpenMeasurementHistoryPlot);
             _measurementService = measurementService;
             _userService = userService;
             MessagingCenter.Subscribe<object>(this, "UpdateSettings", (_) => { OnPropertyChanged(nameof(ActiveUserIsAdmin)); });
@@ -48,6 +49,7 @@ namespace PSExampleApp.Forms.ViewModels
         public ICommand OpenMeasurementListCommand { get; }
         public ICommand StartMeasurementCommand { get; }
         public ICommand OpenQRScannerCommand { get; }
+        public ICommand OpenMeasurementHistoryPlotCommand { get; }
 
         public async Task OnPageAppearing()
         {
@@ -120,6 +122,11 @@ namespace PSExampleApp.Forms.ViewModels
         private async Task OpenQRScanner()
         {
             await NavigationDispatcher.Push(NavigationViewType.QRCodeScannerPage);
+        }
+
+        private async Task OpenMeasurementHistoryPlot()
+        {
+            await NavigationDispatcher.Push(NavigationViewType.MeasurementHistoryPlotView);
         }
     }
 }

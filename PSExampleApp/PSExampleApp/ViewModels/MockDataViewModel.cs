@@ -179,7 +179,7 @@ namespace PSExampleApp.Forms.ViewModels
                 Concentration = 0.0,
                 Configuration = new MeasurementConfiguration(),
                 Measurement = mockMeasurement,
-                MeasurementDate = DateTime.Now,
+                MeasurementDate = DateTime.Now.Date,
                 MeasurementImages = new List<byte[]>()
             };
 
