@@ -232,6 +232,15 @@ namespace PSExampleApp.Forms.Resx {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed importing the session. Please check if the session file has the correct format..
+        /// </summary>
+        public static string Alert_FailedImportSession {
+            get {
+                return ResourceManager.GetString("Alert_FailedImportSession", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Not able to load the method. Please reinstall the app..
         /// </summary>
         public static string Alert_MethodNotFound {
@@ -264,6 +273,15 @@ namespace PSExampleApp.Forms.Resx {
         public static string Alert_SelectValidMethodFile {
             get {
                 return ResourceManager.GetString("Alert_SelectValidMethodFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please select a valid pssession file..
+        /// </summary>
+        public static string Alert_SelectValidSessionFile {
+            get {
+                return ResourceManager.GetString("Alert_SelectValidSessionFile", resourceCulture);
             }
         }
         

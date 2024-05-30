@@ -127,5 +127,34 @@ namespace PalmSens.Core.Simplified.XF.Application.Services
             }
         }
 
+        /// <summary>
+        /// Loads a SimpleMeasurement from a .pssession file located on the device.
+        /// </summary>
+        /// <param name="filePath">The full path of the .pssession file.</param>
+        /// <returns>A task that represents the asynchronous operation, containing the loaded SimpleMeasurement.</returns>
+        /// <exception cref="FileNotFoundException">Thrown if the file is not found.</exception>
+        /// <exception cref="Exception">A general exception for other errors.</exception>
+        public async Task<SimpleMeasurement> LoadMeasurementFromFileAsync(string filePath)
+        {
+            try
+            {
+                using (var streamReader = new StreamReader(filePath))
+                {
+                    if (streamReader == null || !streamReader.BaseStream.CanRead)
+                    {
+                        throw new FileNotFoundException("Unable to open file stream for reading.", filePath);
+                    }
+
+                    var measurement = LoadMeasurement(streamReader.BaseStream);
+                    return await Task.FromResult(measurement);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to load the measurement from file '{filePath}': {ex.Message}", ex);
+            }
+        }
+
+
     }
 }

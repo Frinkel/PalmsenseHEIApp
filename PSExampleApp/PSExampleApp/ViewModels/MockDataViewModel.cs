@@ -15,7 +15,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Org.BouncyCastle.Crypto.Engines;
+using PSExampleApp.Forms.Resx;
 using Xamarin.CommunityToolkit.ObjectModel;
+using Xamarin.Essentials;
+using Xamarin.Forms;
 
 namespace PSExampleApp.Forms.ViewModels
 {
@@ -47,22 +50,15 @@ namespace PSExampleApp.Forms.ViewModels
             _measurementService = measurementService;
 
             ActiveUser = _userService.ActiveUser;
-            LoadMockDataCommand = CommandFactory.Create(LoadMockData);
-            OnPageAppearingCommand = CommandFactory.Create(OnPageAppearing);
             ContinueCommand = CommandFactory.Create(Continue);
+            SelectDataCommand = CommandFactory.Create(OnSelectData);
 
         }
 
-        public ICommand LoadMockDataCommand { get; }
+        //public ICommand LoadMockDataCommand { get; }
         public ICommand OnPageAppearingCommand { get; }
         public ICommand ContinueCommand { get; }
-
-
-        private async Task OnPageAppearing()
-        {
-            await LoadMockData();
-            await Continue();
-        }
+        public ICommand SelectDataCommand { get; }
 
         public User ActiveUser { get; set; }
 
@@ -88,45 +84,72 @@ namespace PSExampleApp.Forms.ViewModels
             set => SetProperty(ref _progressPercentage, value);
         }
 
-        private async Task LoadMockData()
+        private async Task OnSelectData()
+        {
+            var customFileType =
+                new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
+                {
+                    { DevicePlatform.iOS, new[] { "application/octet-stream" } },
+                    { DevicePlatform.Android, new[] { "application/octet-stream" } },
+                });
+            var options = new PickOptions
+            {
+                PickerTitle = AppResources.Picker_SelectMethodFile,
+                FileTypes = customFileType,
+            };
+
+            try
+            {
+                FileResult result = null;
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    result = await FilePicker.PickAsync();
+                }
+                else if (Device.RuntimePlatform == Device.Android)
+                {
+                    result = await FilePicker.PickAsync(options);
+                }
+
+                if (result != null)
+                {
+                    if (!result.FileName.EndsWith("pssession"))
+                    {
+                        _messageService.ShortAlert(AppResources.Alert_SelectValidSessionFile);
+                        return;
+                    }
+
+                    var measurement = await _loadSavePlatformService.LoadMeasurementFromFileAsync(result.FullPath);
+                    _messageService.ShortAlert(AppResources.Alert_MethodSaved);
+
+                    LoadMockData(measurement);
+                    await Continue();
+                }
+            }
+            catch (PermissionException)
+            {
+                _messageService.LongAlert(AppResources.Alert_FailedImport);
+            }
+            catch (Exception)
+            {
+                _messageService.LongAlert(AppResources.Alert_FailedImportSession);
+            }
+        }
+
+        private void LoadMockData(SimpleMeasurement mockMeasurement)
         {
             try
             {
-                SimpleMeasurement mockMeasurement = await _loadSavePlatformService.LoadMeasurementFromAssetAsync(mockDataFile);
-
                 ActiveMeasurement = MockHeavyMetalMeasurement(mockMeasurement);
+                _measurementService.SetActiveMeasurement(ActiveMeasurement);
 
                 double targetFrequency = 126.0;
-                var impedanceValue = GetValuesFromTargetFreq(targetFrequency);
-                double concentration = CalculateConcentration(impedanceValue);
+                double concentration = _measurementService.HeiCalculateConcentration(targetFrequency);
+
                 ActiveMeasurement.HeiConcentration = concentration;
 
-                if (mockMeasurement != null && mockMeasurement.SimpleCurveCollection != null)
-                {
-                    foreach (var curve in mockMeasurement.SimpleCurveCollection)
-                    {
-                        if (_activeCurve == null)
-                        {
-                            _activeCurve = curve;
-                            for (int i = 0; i < curve.NDataPoints; i++)
-                            {
-                                double xValue = _activeCurve.XAxisValue(i); //Get the value on Curve's X-Axis (potential) at the specified index
-                                double yValue = _activeCurve.YAxisValue(i); //Get the value on Curve's Y-Axis (current) at the specified index
-
-                                Debug.WriteLine($"Data received potential {xValue}, current {yValue}");
-                            }
-                        }
-                        else
-                        {
-                            _activeCurve.AddCustom(curve); // <- custom functionality to add data values to a SimpleCurve
-                        }
-                    }
-
-                    MeasurementIsFinished = true;
-                    Progress = 1;
-                    ProgressPercentage = 100;
-                    //ProcessMockData(_activeCurve);
-                }
+                MeasurementIsFinished = true;
+                Progress = 1;
+                ProgressPercentage = 100;
             }
             catch (Exception ex)
             {
@@ -135,56 +158,7 @@ namespace PSExampleApp.Forms.ViewModels
             }
         }
 
-        private double GetValuesFromTargetFreq(double targetFrequency)
-        {
-            var baseArray = ActiveMeasurement.Measurement.Measurement.EISdata.FirstOrDefault().EISDataSet.GetDataArrays();
-            var frequencyArray = baseArray.FirstOrDefault(a => a.ArrayType == 5);
-            var impedanceArray = baseArray.FirstOrDefault(a => a.ArrayType == 10);
-            var phaseArray = baseArray.FirstOrDefault(a => a.ArrayType == 6);
-
-            if (frequencyArray == null || impedanceArray == null || phaseArray == null)
-            {
-                Debug.WriteLine("One or more required data arrays are missing.");
-                throw new Exception("One or more required data arrays are missing.");
-            }
-
-            double[] frequencyValues = frequencyArray.GetValues();
-
-            int index = Array.FindIndex(frequencyValues, freq => Math.Floor(freq) == targetFrequency);
-
-            if (index != -1)
-            {
-                Debug.WriteLine($"Index of target frequency ({targetFrequency} Hz): {index}");
-
-                // Retrieve corresponding impedance and phase values using the index
-                double[] impedanceData = impedanceArray.GetValues();
-                double[] phaseData = phaseArray.GetValues();
-
-                if (index < impedanceData.Length && index < phaseData.Length)
-                {
-                    double impedanceValue = impedanceData[index];
-                    double phaseValue = phaseData[index];
-                    Debug.WriteLine($"At {targetFrequency} Hz, Impedance (|Z|): {impedanceValue}, Phase: {phaseValue} degrees");
-                    return impedanceValue;
-                }
-            }
-            else
-            {
-                Debug.WriteLine($"Frequency {targetFrequency} Hz not found.");
-                throw new Exception($"Frequency {targetFrequency} Hz not found.");
-            }
-
-            throw new Exception("Target frequency calculation error.");
-        }
-
-        private double CalculateConcentration(double impedanceValue)
-        {
-            // Formula: x = (y - 0.01696) / 0.02704
-
-            double concentration = (impedanceValue - 0.01696) / 0.02704;
-            return concentration;
-        }
-
+       
         private async Task Continue()
         {
             //The continue will trigger the save of the measurement. //TODO maybe add cancel in case user doesn't want to save
@@ -223,47 +197,6 @@ namespace PSExampleApp.Forms.ViewModels
                 counter++;
             } while (existingMeasurements.Any(x => x.Name == newName));
             return newName;
-        }
-
-        private void ProcessMockData(SimpleCurve curve)
-        {
-            try
-            {
-                RunPeakAnalysis(curve).ConfigureAwait(false);
-                MeasurementIsFinished = true;
-                Progress = 1;
-                ProgressPercentage = 100;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error processing mock data: {ex.Message}");
-            }
-        }
-
-        private async Task RunPeakAnalysis(SimpleCurve curve)
-        {
-            try
-            {
-                curve.DetectedPeaks += Curve_DetectedPeaks;
-                await curve.DetectPeaksAsync(
-                    ActiveMeasurement.Configuration.ConcentrationMethod.PeakMinWidth,
-                    ActiveMeasurement.Configuration.ConcentrationMethod.PeakMinHeight,
-                    true,
-                    PeakTypes.Default);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error in peak analysis: {ex.Message}");
-            }
-        }
-
-        private void Curve_DetectedPeaks(object sender, EventArgs e)
-        {
-            _measurementService.CalculateConcentration();
-
-            MeasurementIsFinished = true;
-            Progress = 1;
-            ProgressPercentage = 100;
         }
     }
 }

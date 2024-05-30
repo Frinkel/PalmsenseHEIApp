@@ -183,6 +183,9 @@
   <data name="Alert_FailedImportMethod" xml:space="preserve">
     <value>Failed importing the method. Please check if the method file has the correct format.</value>
   </data>
+  <data name="Alert_FailedImportSession" xml:space="preserve">
+    <value>Failed importing the session. Please check if the session file has the correct format.</value>
+  </data>
   <data name="Alert_MethodNotFound" xml:space="preserve">
     <value>Not able to load the method. Please reinstall the app.</value>
   </data>
@@ -194,6 +197,9 @@
   </data>
   <data name="Alert_SelectValidMethodFile" xml:space="preserve">
     <value>Please select a valid psmethod file.</value>
+  </data>
+  <data name="Alert_SelectValidSessionFile" xml:space="preserve">
+    <value>Please select a valid pssession file.</value>
   </data>
   <data name="Alert_SomethingWrong" xml:space="preserve">
     <value>Something went wrong with starting a measurement please restart the device and try again</value>

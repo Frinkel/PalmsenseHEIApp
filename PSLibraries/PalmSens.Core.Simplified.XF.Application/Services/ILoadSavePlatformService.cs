@@ -28,5 +28,7 @@ namespace PalmSens.Core.Simplified.XF.Application.Services
         public Task SaveMeasurementToStreamAsync(SimpleMeasurement simpleMeasurement, Stream stream);
 
         public Task<SimpleMeasurement> LoadMeasurementFromAssetAsync(string assetName);
+
+        public Task<SimpleMeasurement> LoadMeasurementFromFileAsync(string assetName);
     }
 }

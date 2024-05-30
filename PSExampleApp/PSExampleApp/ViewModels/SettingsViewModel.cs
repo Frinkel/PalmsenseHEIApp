@@ -1,12 +1,17 @@
 ﻿using MvvmHelpers;
+using Newtonsoft.Json;
+using PalmSens.Core.Simplified.XF.Application.Services;
 using PSExampleApp.Common.Models;
 using PSExampleApp.Core.Services;
+using System.Diagnostics;
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.Helpers;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
+using ZXing.Mobile;
 
 namespace PSExampleApp.Forms.ViewModels
 {
@@ -17,11 +22,13 @@ namespace PSExampleApp.Forms.ViewModels
         private bool _useMockData;
         private Language _language;
         private bool _settingsChanged;
+        private readonly IMessageService _messageService;
 
-        public SettingsViewModel(IUserService userService, IAppConfigurationService appConfigurationService) : base(appConfigurationService)
+        public SettingsViewModel(IUserService userService, IAppConfigurationService appConfigurationService, IMessageService messageService) : base(appConfigurationService)
         {
             _userService = userService;
             _settingsChanged = false;
+            _messageService = messageService;
             if (_userService?.ActiveUser != null)
             {
                 IsAdmin = _userService.ActiveUser.IsAdmin;
@@ -29,6 +36,8 @@ namespace PSExampleApp.Forms.ViewModels
             }
 
             OnPageDisappearingCommand = CommandFactory.Create(OnDisappearing);
+
+            ScanCommand = CommandFactory.Create(ScanAsync);
         }
 
         public bool IsAdmin
@@ -53,6 +62,7 @@ namespace PSExampleApp.Forms.ViewModels
             }
         }
 
+        public ICommand ScanCommand { get; }
         public ICommand OnPageDisappearingCommand { get; }
 
         private void OnDisappearing()
@@ -62,6 +72,49 @@ namespace PSExampleApp.Forms.ViewModels
                 return;
 
             MessagingCenter.Send<object>(this, "UpdateSettings");
+        }
+
+        private async Task ScanAsync()
+        {
+            try
+            {
+                var scanner = new MobileBarcodeScanner();
+
+                var result = await scanner.Scan();
+
+                if (result != null)
+                {
+                    try
+                    {
+                        var configuration = JsonConvert.DeserializeObject<LinearEqConfiguration>(result.Text);
+
+                        if (configuration.Slope == null || configuration.Intercept == null)
+                        {
+                            _messageService.ShortAlert("Failed to parse configuration.");
+                        } 
+                        else if (configuration != null)
+                        {
+                            _messageService.ShortAlert("Scanned QR Code and parsed configuration.");
+
+                            _userService.ActiveUser.UserLinearEquationConfiguration = configuration;
+                        }
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        Debug.WriteLine($"JSON Error: {jsonEx.Message}");
+                        _messageService.ShortAlert("Error: Failed to parse JSON data.");
+                    }
+                }
+                else
+                {
+                    _messageService.ShortAlert("No QR code detected.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error scanning QR code: {ex.Message}");
+                _messageService.ShortAlert("Error: Failed to scan QR code. Please try again.");
+            }
         }
     }
 }

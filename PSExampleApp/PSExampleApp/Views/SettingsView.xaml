@@ -28,43 +28,59 @@
 
     <ContentPage.Content>
         <Grid
-            RowDefinitions="*,50,*,50,5,50,50,5,50,8*,70"
+            RowDefinitions="Auto,Auto,*,Auto"
             ColumnDefinitions="*,3*,*">
             <Grid.Margin>
                 <OnPlatform x:TypeArguments="Thickness">
                     <On Platform="iOS" Value="0,40,0,0" />
                 </OnPlatform>
             </Grid.Margin>
+
             <Label
                 Grid.Column="1"
-                Grid.Row="1"                
+                Grid.Row="3"
                 Style="{StaticResource MediumTextStyle}"
                 Text="{xct:Translate Settings}"
                 WidthRequest="250" />
+
             <StackLayout
                 Grid.Column="1"
-                Grid.Row="8"                
-                Margin="0,10,0,0" 
-                Orientation="Horizontal">
-                <Label
-                    HorizontalOptions="StartAndExpand"
-                    Style="{StaticResource SmallTextStyle}"
-                    Text="{xct:Translate AdminMode}" />
-                <Switch 
-                    HorizontalOptions="EndAndExpand" 
-                    IsToggled="{Binding IsAdmin}" />
-                <Label
-                    HorizontalOptions="StartAndExpand"
-                    Style="{StaticResource SmallTextStyle}"
-                    Text="Use Mock Data" />
-                <Switch 
-                    HorizontalOptions="EndAndExpand" 
-                    IsToggled="{Binding UseMockData}" />
+                Grid.Row="5"
+                Margin="0,10,0,0"
+                Orientation="Vertical">
+                <StackLayout
+                    Orientation="Horizontal">
+                    <Label
+                        HorizontalOptions="StartAndExpand"
+                        Style="{StaticResource SmallTextStyle}"
+                        Text="{xct:Translate AdminMode}" />
+                    <Switch 
+                        HorizontalOptions="EndAndExpand" 
+                        IsToggled="{Binding IsAdmin}" />
+                </StackLayout>
+                <StackLayout
+                    Orientation="Horizontal"
+                    Margin="0,10,0,0">
+                    <Label
+                        HorizontalOptions="StartAndExpand"
+                        Style="{StaticResource SmallTextStyle}"
+                        Text="Use Mock Data" />
+                    <Switch 
+                        HorizontalOptions="EndAndExpand" 
+                        IsToggled="{Binding UseMockData}" />
+                </StackLayout>
+                <Button
+                    Command="{Binding ScanCommand}"
+                    HorizontalOptions="Center"
+                    Text="Scan Linear Equation"
+                    Margin="0,20,0,0"
+                    WidthRequest="200" />
             </StackLayout>
+
             <ContentView
                 Grid.Column="0"
                 Grid.ColumnSpan="3"
-                Grid.Row="10"                    
+                Grid.Row="10"
                 VerticalOptions="End">
                 <views:StatusBarView />
             </ContentView>

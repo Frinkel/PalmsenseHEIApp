@@ -20,5 +20,6 @@
         LoginView,
         MockDataView,
         HeiView,
+        QRCodeScannerPage,
     }
 }

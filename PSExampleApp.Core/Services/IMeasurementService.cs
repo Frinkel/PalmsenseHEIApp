@@ -98,5 +98,9 @@ namespace PSExampleApp.Core.Services
         public Task<SimpleMeasurement> StartMeasurement(Method method);
 
         public Task<HeavyMetalMeasurement> GetActiveMeasurement();
+
+        public double HeiCalculateConcentration(double targetFrequency);
+
+        public void SetActiveMeasurement(HeavyMetalMeasurement activeMeasurement);
     }
 }

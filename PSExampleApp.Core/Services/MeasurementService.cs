@@ -244,5 +244,68 @@ namespace PSExampleApp.Core.Services
             
             return _activeMeasurement;
         }
+
+
+        public double HeiCalculateConcentration(double targetFrequency)
+        {
+            double impedanceValue = GetValuesFromTargetFreq(targetFrequency);
+            double concentration = CalculateConcentration(impedanceValue);
+            return concentration;
+        }
+
+        private double GetValuesFromTargetFreq(double targetFrequency)
+        {
+            var baseArray = ActiveMeasurement.Measurement.Measurement.EISdata.FirstOrDefault().EISDataSet.GetDataArrays();
+            var frequencyArray = baseArray.FirstOrDefault(a => a.ArrayType == 5);
+            var impedanceArray = baseArray.FirstOrDefault(a => a.ArrayType == 10);
+            var phaseArray = baseArray.FirstOrDefault(a => a.ArrayType == 6);
+
+            if (frequencyArray == null || impedanceArray == null || phaseArray == null)
+            {
+                Debug.WriteLine("One or more required data arrays are missing.");
+                throw new Exception("One or more required data arrays are missing.");
+            }
+
+            double[] frequencyValues = frequencyArray.GetValues();
+
+            int index = Array.FindIndex(frequencyValues, freq => Math.Floor(freq) == targetFrequency);
+
+            if (index != -1)
+            {
+                Debug.WriteLine($"Index of target frequency ({targetFrequency} Hz): {index}");
+
+                // Retrieve corresponding impedance and phase values using the index
+                double[] impedanceData = impedanceArray.GetValues();
+                double[] phaseData = phaseArray.GetValues();
+
+                if (index < impedanceData.Length && index < phaseData.Length)
+                {
+                    double impedanceValue = impedanceData[index];
+                    double phaseValue = phaseData[index];
+                    Debug.WriteLine($"At {targetFrequency} Hz, Impedance (|Z|): {impedanceValue}, Phase: {phaseValue} degrees");
+                    return impedanceValue;
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"Frequency {targetFrequency} Hz not found.");
+                throw new Exception($"Frequency {targetFrequency} Hz not found.");
+            }
+
+            throw new Exception("Target frequency calculation error.");
+        }
+
+        private double CalculateConcentration(double impedanceValue)
+        {
+            // Formula: x = (y - 0.01696) / 0.02704
+            double intercept = _userService.ActiveUser.UserLinearEquationConfiguration.Intercept ?? 0.01696; // DEFAULT
+            double slope = _userService.ActiveUser.UserLinearEquationConfiguration.Slope ?? 0.02704; // DEFAULT
+            return (impedanceValue - intercept) / slope;
+        }
+
+        public void SetActiveMeasurement(HeavyMetalMeasurement _activeMeasurement)
+        {
+            ActiveMeasurement = _activeMeasurement;
+        }
     }
 }

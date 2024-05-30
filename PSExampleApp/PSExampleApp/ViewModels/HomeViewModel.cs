@@ -31,6 +31,7 @@ namespace PSExampleApp.Forms.ViewModels
             OpenMockDataCommand = CommandFactory.Create(OpenMockDataView);
             StartMeasurementCommand = CommandFactory.Create(StartMeasurement);
             ConfigureApplicationCommand = CommandFactory.Create(ConfigureApplication);
+            OpenQRScannerCommand = CommandFactory.Create(OpenQRScanner);
             _measurementService = measurementService;
             _userService = userService;
             MessagingCenter.Subscribe<object>(this, "UpdateSettings", (_) => { OnPropertyChanged(nameof(ActiveUserIsAdmin)); });
@@ -46,6 +47,7 @@ namespace PSExampleApp.Forms.ViewModels
         public ICommand OpenMockDataCommand { get; }
         public ICommand OpenMeasurementListCommand { get; }
         public ICommand StartMeasurementCommand { get; }
+        public ICommand OpenQRScannerCommand { get; }
 
         public async Task OnPageAppearing()
         {
@@ -113,6 +115,11 @@ namespace PSExampleApp.Forms.ViewModels
         private async Task OpenMockDataView()
         {
             await NavigationDispatcher.Push(NavigationViewType.MockDataView);
+        }
+
+        private async Task OpenQRScanner()
+        {
+            await NavigationDispatcher.Push(NavigationViewType.QRCodeScannerPage);
         }
     }
 }

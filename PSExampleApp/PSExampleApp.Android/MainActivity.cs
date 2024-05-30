@@ -8,6 +8,7 @@ using Plugin.CurrentActivity;
 using PSExampleApp.Droid.Services;
 using PSExampleApp.Forms;
 using Xamarin.Forms;
+using ZXing.Mobile;
 
 namespace PSExampleApp.Droid
 {
@@ -50,6 +51,8 @@ namespace PSExampleApp.Droid
             OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init();
 
             LoadApplication(new App());
+
+            MobileBarcodeScanner.Initialize(Application);
         }
     }
 }

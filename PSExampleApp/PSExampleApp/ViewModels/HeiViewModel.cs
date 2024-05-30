@@ -25,6 +25,7 @@ namespace PSExampleApp.Forms.ViewModels
     public class HeiViewModel : BaseAppViewModel
     {
         private readonly IMeasurementService _measurementService;
+        private readonly IUserService _userService;
         private readonly IMessageService _messageService;
         private readonly IPopupNavigation _popupNavigation;
         private readonly IShareService _shareService;
@@ -34,15 +35,17 @@ namespace PSExampleApp.Forms.ViewModels
         //private bool _hasMax
         private HeavyMetalMeasurement _loadedMeasurement;
 
-        public HeiViewModel(IMeasurementService measurementService, IShareService shareService, IAppConfigurationService appConfigurationService, IMessageService messageService) : base(appConfigurationService)
+        public HeiViewModel(IMeasurementService measurementService, IShareService shareService, IAppConfigurationService appConfigurationService, IMessageService messageService, IUserService userService) : base(appConfigurationService)
         {
             _measurementService = measurementService;
             _messageService = messageService;
             _shareService = shareService;
+            _userService = userService;
             ActiveMeasurement = _measurementService.ActiveMeasurement;
             _popupNavigation = PopupNavigation.Instance;
             NavigateToHomeCommand = CommandFactory.Create(NavigateToHome);
             Task.Run(() => this.InitializeActiveMeasurement()).Wait();
+            
         }
 
         public HeavyMetalMeasurement ActiveMeasurement
@@ -67,7 +70,7 @@ namespace PSExampleApp.Forms.ViewModels
         public string ViewFriendlyConcentration
         {
             get => ActiveMeasurement != null
-                ? $"Concentration: {Math.Round(ActiveMeasurement.HeiConcentration, 2)} mIU/L"
+                ? $"Concentration: {Math.Round(ActiveMeasurement.HeiConcentration, 2)} {_userService.ActiveUser.UserLinearEquationConfiguration.Unit}"
                 : "Concentration: N/A";
         }
 

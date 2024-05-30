@@ -33,6 +33,7 @@ namespace PSExampleApp.Forms
             services.AddTransient<LoginViewModel>();
             services.AddTransient<HeiViewModel>();
             services.AddTransient<MockDataViewModel>();
+            services.AddTransient<QRCodeScannerViewModel>();
             services.AddTransient<SelectDeviceViewModel>();
             services.AddTransient<PrepareMeasurementViewModel>();
             services.AddTransient<SettingsViewModel>();

@@ -30,28 +30,46 @@
     </ContentPage.BackgroundImageSource>
 
     <ContentPage.Content>
-        <Grid>
+
+        <StackLayout Spacing="20" Padding="20" VerticalOptions="CenterAndExpand">
+            <StackLayout>
+
+                <Label Text="Mock Data View" 
+                       HorizontalOptions="Center" VerticalOptions="Center"
+                       TextColor="White" Style="{StaticResource MediumTextStyle}" />
+                <Button Text="Select Data"
+                        Command="{Binding SelectDataCommand}" 
+                        HorizontalOptions="Center" VerticalOptions="Center"
+                        Margin="0,20,0,0"/>
+            </StackLayout>
+
+            
+        </StackLayout>
+        <!--<Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <!-- Flexible space above -->
+                --><!-- Flexible space above --><!--
                 <RowDefinition Height="Auto" />
-                <!-- Space for the label -->
+                --><!-- Space for the label --><!--
                 <RowDefinition Height="*" />
-                <!-- Flexible space below -->
+                --><!-- Flexible space below --><!--
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <!-- Flexible space to the left -->
+                --><!-- Flexible space to the left --><!--
                 <ColumnDefinition Width="Auto" />
-                <!-- Space for the label -->
+                --><!-- Space for the label --><!--
                 <ColumnDefinition Width="*" />
-                <!-- Flexible space to the right -->
+                --><!-- Flexible space to the right --><!--
             </Grid.ColumnDefinitions>
 
-            <!-- Label centered in the middle of the view -->
+            --><!-- Label centered in the middle of the view --><!--
             <Label Grid.Row="1" Grid.Column="1" Text="Mock Data View" 
                    HorizontalOptions="Center" VerticalOptions="Center"
                    TextColor="White" Style="{StaticResource MediumTextStyle}" />
-        </Grid>
+            <Button Grid.Row="2" Grid.Column="1" Text="Select Data"
+                    Command="{Binding SelectDataCommand}" 
+                    HorizontalOptions="Center" VerticalOptions="Center" />
+        </Grid>-->
     </ContentPage.Content>
 </ContentPage>

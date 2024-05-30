@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:PSExampleApp.Forms.Behaviors"
+             xmlns:local="clr-namespace:PSExampleApp.Forms.Converters"
+             xmlns:models="clr-namespace:PSExampleApp.Common.Models;assembly=PSExampleApp.Common"
+             xmlns:views="clr-namespace:PSExampleApp.Forms.Views"
+             xmlns:viewmodels="clr-namespace:PSExampleApp.Forms.ViewModels"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:helpers="clr-namespace:PSExampleApp.Core.Helpers;assembly=PSExampleApp.Core"
+             x:DataType="viewmodels:QRCodeScannerViewModel"
+             x:Class="PSExampleApp.Forms.Views.QRCodeScannerPage"
+             NavigationPage.HasBackButton="False"
+             Style="{StaticResource CustomPage}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+            <local:EnumBooleanConverter x:Key="enumToBooleanConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BackgroundImageSource>
+        <Binding Path="BackgroundImage" Converter="{StaticResource ByteArrayToImageSourceConverter}" />
+    </ContentPage.BackgroundImageSource>
+
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="20" VerticalOptions="CenterAndExpand">
+            <StackLayout Padding="10">
+                <Button Text="Scan QR Code" Command="{Binding ScanCommand}" />
+                <Label Text="{Binding ScannedResult}" FontSize="Medium" Margin="0,20,0,0" />
+            </StackLayout>
+
+            <Button
+                Command="{Binding NavigateToHomeCommand}"
+                HorizontalOptions="Center"
+                Text="{xct:Translate Home}"
+                WidthRequest="200" />
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>
