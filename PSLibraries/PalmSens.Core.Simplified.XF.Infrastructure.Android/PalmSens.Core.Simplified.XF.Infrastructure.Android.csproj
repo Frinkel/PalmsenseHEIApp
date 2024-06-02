@@ -16,7 +16,6 @@
     <Deterministic>True</Deterministic>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v12.0</TargetFrameworkVersion>
     <AndroidUseAapt2>true</AndroidUseAapt2>
   </PropertyGroup>
@@ -75,11 +74,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PalmSens.Core.Simplified.XF.Application\PalmSens.Core.Simplified.XF.Application.csproj">
-      <Project>{e2348dd0-116f-4701-b57b-9db3ff372376}</Project>
+      <Project>{CB510E02-A04F-46A6-832F-D8925066036E}</Project>
       <Name>PalmSens.Core.Simplified.XF.Application</Name>
     </ProjectReference>
     <ProjectReference Include="..\PalmSens.Core.Simplified\PalmSens.Core.Simplified.csproj">
-      <Project>{5e9ed037-8863-427a-be91-4c831255d6fb}</Project>
+      <Project>{564E4775-148F-4CCB-ADA2-74B50A3AACBA}</Project>
       <Name>PalmSens.Core.Simplified</Name>
     </ProjectReference>
   </ItemGroup>
