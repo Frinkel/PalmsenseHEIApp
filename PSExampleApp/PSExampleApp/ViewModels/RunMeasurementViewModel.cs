@@ -1,10 +1,6 @@
-﻿using MvvmHelpers;
-using PalmSens;
-using PalmSens.Core.Simplified.Data;
+﻿using PalmSens;
 using PalmSens.Core.Simplified.XF.Application.Services;
-using PalmSens.Devices;
 using PSExampleApp.Common.Models;
-using PSExampleApp.Core.Extentions;
 using PSExampleApp.Core.Services;
 using PSExampleApp.Forms.Navigation;
 using PSExampleApp.Forms.Resx;
@@ -23,7 +19,6 @@ namespace PSExampleApp.Forms.ViewModels
         private readonly IDeviceService _deviceService;
         private readonly IMeasurementService _measurementService;
         private readonly IMessageService _messageService;
-        private SimpleCurve _activeCurve;
         private Countdown _countdown = new Countdown();
 
         private bool _measurementFinished = false;
@@ -36,7 +31,7 @@ namespace PSExampleApp.Forms.ViewModels
             _deviceService = deviceService;
             _messageService = messageService;
             _measurementService = measurementService;
-            _measurementService.DataReceived += _measurementService_DataReceived;
+            _measurementService.MeasurementStarted += _measurementService_MeasurementStarted;
             _measurementService.MeasurementEnded += _measurementService_MeasurementEnded;
 
             ActiveMeasurement = _measurementService.ActiveMeasurement;
@@ -77,41 +72,22 @@ namespace PSExampleApp.Forms.ViewModels
 
         public ObservableCollection<string> ReceivedData { get; set; } = new ObservableCollection<string>();
 
-        private void _measurementService_DataReceived(object sender, SimpleCurve activeSimpleCurve)
+        private void _measurementService_MeasurementStarted(object sender, EventArgs e)
         {
-            _activeCurve = activeSimpleCurve;
-            activeSimpleCurve.NewDataAdded += ActiveSimpleCurve_NewDataAdded;
+            _messageService.ShortAlert("Measurement started");
         }
 
         private void _measurementService_MeasurementEnded(object sender, EventArgs e)
         {
-            _activeCurve.NewDataAdded -= ActiveSimpleCurve_NewDataAdded;
+            _messageService.ShortAlert("Measurement ended");
             _countdown.Ticked -= OnCountdownTicked;
 
-            RunPeakAnalysis().WithCallback(
-                onError: async (ex) =>
-                {
-                    _messageService.LongAlert(AppResources.Alert_SomethingWrong);
-                    Debug.WriteLine(ex);
-                    _measurementService.ResetMeasurement();
-                    await _deviceService.DisconnectDevice();
-                    await NavigationDispatcher.PopToRoot();
-                });
-        }
+            double targetFrequency = 126.0;
+            _measurementService.HeiCalculateConcentration(targetFrequency);
 
-        private void ActiveSimpleCurve_NewDataAdded(object sender, PalmSens.Data.ArrayDataAddedEventArgs e)
-        {
-            int startIndex = e.StartIndex; //The index of the first new data point added to the curve
-            int count = e.Count; //The number of new data points added to the curve
-
-            for (int i = startIndex; i < startIndex + count; i++)
-            {
-                double xValue = _activeCurve.XAxisValue(i); //Get the value on Curve's X-Axis (potential) at the specified index
-                double yValue = _activeCurve.YAxisValue(i); //Get the value on Curve's Y-Axis (current) at the specified index
-
-                Debug.WriteLine($"Data received potential {xValue}, current {yValue}");
-                ReceivedData.Add($"potential {xValue}, current {yValue}");
-            }
+            Progress = 1;
+            ProgressPercentage = 100;
+            MeasurementIsFinished = true;
         }
 
         private async Task Continue()
@@ -119,17 +95,7 @@ namespace PSExampleApp.Forms.ViewModels
             //The continue will trigger the save of the measurement. //TODO maybe add cancel in case user doesn't want to save
             ActiveMeasurement.MeasurementDate = DateTime.Now.Date;
             await _measurementService.SaveMeasurement(ActiveMeasurement);
-            await NavigationDispatcher.Push(NavigationViewType.MeasurementFinishedView);
-        }
-
-        private void Curve_DetectedPeaks(object sender, EventArgs e)
-        {
-            _measurementService.CalculateConcentration();
-
-            //After the concentration is calculated we allow the user to press continue
-            Progress = 1;
-            ProgressPercentage = 100;
-            MeasurementIsFinished = true;
+            await NavigationDispatcher.Push(NavigationViewType.HeiView);
         }
 
         private async Task<Method> LoadDiffPulseMethod()
@@ -187,24 +153,6 @@ namespace PSExampleApp.Forms.ViewModels
                 await _deviceService.DisconnectDevice();
                 await NavigationDispatcher.PopToRoot();
             }
-        }
-
-        private async Task RunPeakAnalysis()
-        {
-            _activeCurve.DetectedPeaks += Curve_DetectedPeaks;
-
-            var peakType = PeakTypes.Default;
-            if (ActiveMeasurement.Measurement.MeasurementType == MeasurementTypes.LinearSweepVoltammetry ||
-                ActiveMeasurement.Measurement.MeasurementType == MeasurementTypes.CyclicVoltammetry)
-            {
-                peakType = PeakTypes.LSVCV;
-            }
-
-            await _activeCurve.DetectPeaksAsync(
-                ActiveMeasurement.Configuration.ConcentrationMethod.PeakMinWidth,
-                ActiveMeasurement.Configuration.ConcentrationMethod.PeakMinHeight,
-                true,
-                peakType);
         }
     }
 }

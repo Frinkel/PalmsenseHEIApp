@@ -35,8 +35,26 @@
         public List<byte[]> MeasurementImages { get; set; } = new List<byte[]>();
 
         /// <summary>
-        /// Gets or sets the concentration used by Hei Theraputics
+        /// Gets or sets the concentration used by Hei Theraputics.
+        /// When setting the value, get the base log10 of the value.
         /// </summary>
-        public double HeiConcentration { get; set; }
+        private double _heiConcentration;
+
+        public double HeiConcentration {
+            get
+            {
+                return _heiConcentration;
+            }
+            set
+            {
+                _heiConcentration = value;
+            }
+        }
+
+        public double SetHeiConcentration { set
+            {
+                _heiConcentration = Math.Log10(value);
+            }
+        }
     }
 }

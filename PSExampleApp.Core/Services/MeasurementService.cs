@@ -245,12 +245,12 @@ namespace PSExampleApp.Core.Services
             return _activeMeasurement;
         }
 
-
         public double HeiCalculateConcentration(double targetFrequency)
         {
             double impedanceValue = GetValuesFromTargetFreq(targetFrequency);
             double concentration = CalculateConcentration(impedanceValue);
-            return concentration;
+            ActiveMeasurement.SetHeiConcentration = concentration;
+            return ActiveMeasurement.HeiConcentration;
         }
 
         private double GetValuesFromTargetFreq(double targetFrequency)
@@ -298,8 +298,8 @@ namespace PSExampleApp.Core.Services
         private double CalculateConcentration(double impedanceValue)
         {
             // Formula: x = (y - 0.01696) / 0.02704
-            double intercept = _userService.ActiveUser.UserLinearEquationConfiguration.Intercept ?? 0.01696; // DEFAULT
-            double slope = _userService.ActiveUser.UserLinearEquationConfiguration.Slope ?? 0.02704; // DEFAULT
+            double intercept = _userService.ActiveUser?.UserLinearEquationConfiguration?.Intercept ?? 0.01696; // DEFAULT
+            double slope = _userService.ActiveUser?.UserLinearEquationConfiguration?.Slope ?? 0.02704; // DEFAULT
             return (impedanceValue - intercept) / slope;
         }
 

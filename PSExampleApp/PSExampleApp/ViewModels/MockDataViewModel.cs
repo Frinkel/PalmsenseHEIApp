@@ -143,9 +143,7 @@ namespace PSExampleApp.Forms.ViewModels
                 _measurementService.SetActiveMeasurement(ActiveMeasurement);
 
                 double targetFrequency = 126.0;
-                double concentration = _measurementService.HeiCalculateConcentration(targetFrequency);
-
-                ActiveMeasurement.HeiConcentration = concentration;
+                _measurementService.HeiCalculateConcentration(targetFrequency);
 
                 MeasurementIsFinished = true;
                 Progress = 1;
