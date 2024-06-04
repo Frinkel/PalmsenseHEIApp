@@ -12,6 +12,7 @@ using Xamarin.CommunityToolkit.Helpers;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using ZXing.Mobile;
+using PalmSens.Comm;
 
 namespace PSExampleApp.Forms.ViewModels
 {
@@ -72,6 +73,17 @@ namespace PSExampleApp.Forms.ViewModels
                 return;
 
             MessagingCenter.Send<object>(this, "UpdateSettings");
+        }
+
+
+        public string ViewFriendlyLinearEquation
+        {
+            get {
+                LinearEqConfiguration linearEq = _userService?.ActiveUser?.UserLinearEquationConfiguration;
+                return linearEq != null
+                ? $"y = {linearEq.Intercept} + {linearEq.Slope} * x"
+                : "No Linear Eq Configured.";
+            }
         }
 
         private async Task ScanAsync()

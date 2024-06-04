@@ -70,7 +70,7 @@ namespace PSExampleApp.Forms.ViewModels
         public string ViewFriendlyConcentration
         {
             get => ActiveMeasurement != null
-                ? $"Concentration: {Math.Round(ActiveMeasurement.HeiConcentration, 2)} {_userService.ActiveUser.UserLinearEquationConfiguration.Unit}"
+                ? $"Concentration: {Math.Round(ActiveMeasurement.HeiConcentration, 2)} {_userService.ActiveUser?.UserLinearEquationConfiguration?.Unit ?? ""}"
                 : "Concentration: N/A";
         }
 
