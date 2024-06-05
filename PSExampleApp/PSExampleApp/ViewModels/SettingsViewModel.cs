@@ -83,6 +83,7 @@ namespace PSExampleApp.Forms.ViewModels
                 return linearEq != null
                 ? $"y = {linearEq.Intercept} + {linearEq.Slope} * x"
                 : "No Linear Eq Configured.";
+                OnPropertyChanged(nameof(ViewFriendlyLinearEquation));
             }
         }
 
@@ -109,6 +110,7 @@ namespace PSExampleApp.Forms.ViewModels
                             _messageService.ShortAlert("Scanned QR Code and parsed configuration.");
 
                             _userService.ActiveUser.UserLinearEquationConfiguration = configuration;
+                            OnPropertyChanged(nameof(ViewFriendlyLinearEquation));
                         }
                     }
                     catch (JsonException jsonEx)

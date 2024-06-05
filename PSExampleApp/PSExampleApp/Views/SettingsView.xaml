@@ -3,7 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behaviors="clr-namespace:PSExampleApp.Forms.Behaviors"
              xmlns:local="clr-namespace:PSExampleApp.Forms.Converters"
-             xmlns:model="clr-namespace:PSExampleApp.Common.Models;assembly=PSExampleApp.Common"
              xmlns:views="clr-namespace:PSExampleApp.Forms.Views"
              xmlns:viewmodels="clr-namespace:PSExampleApp.Forms.ViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
@@ -18,81 +17,75 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
-            <local:EnumBooleanConverter x:Key="enumToBooleanConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
     <ContentPage.BackgroundImageSource>
         <Binding Path="BackgroundImage" Converter="{StaticResource ByteArrayToImageSourceConverter}" />
     </ContentPage.BackgroundImageSource>
+    <Grid
+        RowDefinitions="Auto,Auto,*,*,*,Auto,Auto"
+        ColumnDefinitions="*,3*,*">
+        <Grid.Margin>
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="0,40,0,0" />
+            </OnPlatform>
+        </Grid.Margin>
 
-    <ContentPage.Content>
-        <Grid
-            RowDefinitions="Auto,Auto,*,Auto"
-            ColumnDefinitions="*,3*,*">
-            <Grid.Margin>
-                <OnPlatform x:TypeArguments="Thickness">
-                    <On Platform="iOS" Value="0,40,0,0" />
-                </OnPlatform>
-            </Grid.Margin>
+        <Label
+            Grid.Column="1"
+            Grid.Row="3"
+            Style="{StaticResource MediumTextStyle}"
+            Text="{xct:Translate Settings}"
+            WidthRequest="250" />
 
-            <Label
-                Grid.Column="1"
-                Grid.Row="3"
-                Style="{StaticResource MediumTextStyle}"
-                Text="{xct:Translate Settings}"
-                WidthRequest="250" />
-
+        <StackLayout
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="0,10,0,0"
+            Orientation="Vertical">
             <StackLayout
-                Grid.Column="1"
-                Grid.Row="5"
-                Margin="0,10,0,0"
-                Orientation="Vertical">
-                <StackLayout
-                    Orientation="Horizontal">
-                    <Label
-                        HorizontalOptions="StartAndExpand"
-                        Style="{StaticResource SmallTextStyle}"
-                        Text="{xct:Translate AdminMode}" />
-                    <Switch 
-                        HorizontalOptions="EndAndExpand" 
-                        IsToggled="{Binding IsAdmin}" />
-                </StackLayout>
-                <StackLayout
-                    Orientation="Horizontal"
-                    Margin="0,10,0,0">
-                    <Label
-                        HorizontalOptions="StartAndExpand"
-                        Style="{StaticResource SmallTextStyle}"
-                        Text="Use Mock Data" />
-                    <Switch 
-                        HorizontalOptions="EndAndExpand" 
-                        IsToggled="{Binding UseMockData}" />
-                </StackLayout>
-                <StackLayout
-                    Orientation="Horizontal"
-                    Margin="0,10,0,0">
-                    <Button
-                        Command="{Binding ScanCommand}"
-                        HorizontalOptions="StartAndExpand"
-                        Text="Scan Linear Equation"
-                        Margin="0,20,0,0"
-                        WidthRequest="200" />
-                    <Label
-                        HorizontalOptions="EndAndExpand"
-                        VerticalOptions="Center"
-                        Style="{StaticResource MicroTextStyle}"
-                        Text="{Binding ViewFriendlyLinearEquation}" />
-                </StackLayout>
+                Orientation="Horizontal">
+                <Label
+                    HorizontalOptions="StartAndExpand"
+                    Style="{StaticResource SmallTextStyle}"
+                    Text="{xct:Translate AdminMode}" />
+                <Switch 
+                    HorizontalOptions="EndAndExpand" 
+                    IsToggled="{Binding IsAdmin}" />
             </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                Margin="0,10,0,0">
+                <Label
+                    HorizontalOptions="StartAndExpand"
+                    Style="{StaticResource SmallTextStyle}"
+                    Text="Use Mock Data" />
+                <Switch 
+                    HorizontalOptions="EndAndExpand" 
+                    IsToggled="{Binding UseMockData}" />
+            </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                Margin="0,30,0,0">
+                <Button
+                    Command="{Binding ScanCommand}"
+                    Text="Scan Linear Equation"
+                    WidthRequest="200"/>
+                <Label
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="Center"
+                    Style="{StaticResource MicroTextStyle}"
+                    Text="{Binding ViewFriendlyLinearEquation}" />
+            </StackLayout>
+        </StackLayout>
 
-            <ContentView
-                Grid.Column="0"
-                Grid.ColumnSpan="3"
-                Grid.Row="10"
-                VerticalOptions="End">
-                <views:StatusBarView />
-            </ContentView>
-        </Grid>
-    </ContentPage.Content>
+        <ContentView
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Grid.Row="10"
+            VerticalOptions="End">
+            <views:StatusBarView />
+        </ContentView>
+    </Grid>
 </ContentPage>
