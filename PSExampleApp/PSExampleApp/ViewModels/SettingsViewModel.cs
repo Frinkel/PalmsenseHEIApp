@@ -38,7 +38,7 @@ namespace PSExampleApp.Forms.ViewModels
 
             OnPageDisappearingCommand = CommandFactory.Create(OnDisappearing);
 
-            ScanCommand = CommandFactory.Create(ScanAsync);
+            //ScanCommand = CommandFactory.Create(ScanAsync);
         }
 
         public bool IsAdmin
@@ -73,62 +73,6 @@ namespace PSExampleApp.Forms.ViewModels
                 return;
 
             MessagingCenter.Send<object>(this, "UpdateSettings");
-        }
-
-
-        public string ViewFriendlyLinearEquation
-        {
-            get {
-                LinearEqConfiguration linearEq = _userService?.ActiveUser?.UserLinearEquationConfiguration;
-                return linearEq != null
-                ? $"y = {linearEq.Intercept} + {linearEq.Slope} * x"
-                : "No Linear Eq Configured.";
-                OnPropertyChanged(nameof(ViewFriendlyLinearEquation));
-            }
-        }
-
-        private async Task ScanAsync()
-        {
-            try
-            {
-                var scanner = new MobileBarcodeScanner();
-
-                var result = await scanner.Scan();
-
-                if (result != null)
-                {
-                    try
-                    {
-                        var configuration = JsonConvert.DeserializeObject<LinearEqConfiguration>(result.Text);
-
-                        if (configuration.Slope == null || configuration.Intercept == null)
-                        {
-                            _messageService.ShortAlert("Failed to parse configuration.");
-                        } 
-                        else if (configuration != null)
-                        {
-                            _messageService.ShortAlert("Scanned QR Code and parsed configuration.");
-
-                            _userService.ActiveUser.UserLinearEquationConfiguration = configuration;
-                            OnPropertyChanged(nameof(ViewFriendlyLinearEquation));
-                        }
-                    }
-                    catch (JsonException jsonEx)
-                    {
-                        Debug.WriteLine($"JSON Error: {jsonEx.Message}");
-                        _messageService.ShortAlert("Error: Failed to parse JSON data.");
-                    }
-                }
-                else
-                {
-                    _messageService.ShortAlert("No QR code detected.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"Error scanning QR code: {ex.Message}");
-                _messageService.ShortAlert("Error: Failed to scan QR code. Please try again.");
-            }
         }
     }
 }

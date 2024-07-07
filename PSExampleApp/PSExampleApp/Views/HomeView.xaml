@@ -37,8 +37,9 @@
                 <Button Command="{Binding StartMeasurementCommand}" Text="{xct:Translate RunMeasurement}" />
                 <Button Command="{Binding OpenMeasurementListCommand}" Text="{xct:Translate MeasurementHistory}" />
                 <Button Command="{Binding OpenMeasurementHistoryPlotCommand}" Text="Measurement History Plot" />
-                <Button Command="{Binding OpenLoginPopupCommand}" Text="{xct:Translate ChangeUser}" />
-                 
+                <Button Command="{Binding OpenQRScannerCommand}" Text="Scan QR Code" />
+                <Button Command="{Binding OpenLoginPopupCommand}" Text="{xct:Translate ChangeUser}" /> 
+
                 <Button
                     Command="{Binding ConfigureApplicationCommand}"
                     IsVisible="{Binding ActiveUserIsAdmin}"

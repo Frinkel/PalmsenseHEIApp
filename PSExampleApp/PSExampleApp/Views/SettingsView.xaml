@@ -65,19 +65,6 @@
                     HorizontalOptions="EndAndExpand" 
                     IsToggled="{Binding UseMockData}" />
             </StackLayout>
-            <StackLayout
-                Orientation="Horizontal"
-                Margin="0,30,0,0">
-                <Button
-                    Command="{Binding ScanCommand}"
-                    Text="Scan Linear Equation"
-                    WidthRequest="200"/>
-                <Label
-                    HorizontalOptions="EndAndExpand"
-                    VerticalOptions="Center"
-                    Style="{StaticResource MicroTextStyle}"
-                    Text="{Binding ViewFriendlyLinearEquation}" />
-            </StackLayout>
         </StackLayout>
 
         <ContentView

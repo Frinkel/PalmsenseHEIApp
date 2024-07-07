@@ -1,7 +1,9 @@
-﻿using MvvmHelpers;
+﻿using System;
+using MvvmHelpers;
 using PSExampleApp.Common.Models;
 using PSExampleApp.Core.Services;
 using PSExampleApp.Forms.Navigation;
+using PSExampleApp.Forms.Resx;
 using PSExampleApp.Forms.Views;
 using Rg.Plugins.Popup.Contracts;
 using Rg.Plugins.Popup.Services;
@@ -66,6 +68,26 @@ namespace PSExampleApp.Forms.ViewModels
                     await _appConfigurationService.InitializeMethod();
                 }
             }
+
+            if (_userService?.ActiveUser?.UserLinearEquationConfiguration.Slope == 0.0 ||
+                _userService?.ActiveUser?.UserLinearEquationConfiguration.Intercept == 0.0)
+            {
+                var missingSensorInformationAlert = await NavigationDispatcher.PushAlert("Missing Sensor information", "Currently no Sensor information is configured, please scan an information QR code to configure the sensor. \n\n Press 'OK' to get redirected to the configuration page.");
+                if (missingSensorInformationAlert)
+                {
+                    await NavigationDispatcher.Push(NavigationViewType.QRCodeScannerPage);
+                }
+            }
+            else if (_userService?.ActiveUser?.UserLinearEquationConfiguration.SensorExpirationDate < DateTime.Now)
+            {
+                var confirmExpirationDateAlert = await NavigationDispatcher.PushAlert("Sensor expired!", "The currently configured Sensor has expired. Confirm if you wish to keep using it, otherwise you need to configure a new Sensor.");
+                if (!confirmExpirationDateAlert)
+                {
+                    await NavigationDispatcher.Push(NavigationViewType.QRCodeScannerPage);
+                }
+            }
+
+
             MessagingCenter.Send<object>(this, "DiscoverDevices");
         }
 

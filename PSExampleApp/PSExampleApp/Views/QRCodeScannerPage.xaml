@@ -1,23 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:behaviors="clr-namespace:PSExampleApp.Forms.Behaviors"
              xmlns:local="clr-namespace:PSExampleApp.Forms.Converters"
-             xmlns:models="clr-namespace:PSExampleApp.Common.Models;assembly=PSExampleApp.Common"
-             xmlns:views="clr-namespace:PSExampleApp.Forms.Views"
              xmlns:viewmodels="clr-namespace:PSExampleApp.Forms.ViewModels"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-             xmlns:helpers="clr-namespace:PSExampleApp.Core.Helpers;assembly=PSExampleApp.Core"
+             xmlns:behaviors="clr-namespace:PSExampleApp.Forms.Behaviors;assembly=PSExampleApp.Forms"
+             xmlns:views="clr-namespace:PSExampleApp.Forms.Views;assembly=PSExampleApp.Forms"
              x:DataType="viewmodels:QRCodeScannerViewModel"
              x:Class="PSExampleApp.Forms.Views.QRCodeScannerPage"
-             NavigationPage.HasBackButton="False"
+             NavigationPage.HasBackButton="True"
              Style="{StaticResource CustomPage}">
 
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
-            <local:EnumBooleanConverter x:Key="enumToBooleanConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -25,19 +21,100 @@
         <Binding Path="BackgroundImage" Converter="{StaticResource ByteArrayToImageSourceConverter}" />
     </ContentPage.BackgroundImageSource>
 
-    <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="20" VerticalOptions="CenterAndExpand">
-            <StackLayout Padding="10">
-                <Button Text="Scan QR Code" Command="{Binding ScanCommand}" />
-                <Label Text="{Binding ScannedResult}" FontSize="Medium" Margin="0,20,0,0" />
-            </StackLayout>
 
-            <Button
-                Command="{Binding NavigateToHomeCommand}"
-                HorizontalOptions="Center"
-                Text="{xct:Translate Home}"
-                WidthRequest="200" />
+    <Grid
+        RowDefinitions="Auto,Auto,*,*,*,Auto,Auto"
+        ColumnDefinitions="*,3*,*">
+        <Grid.Margin>
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="iOS" Value="0,40,0,0" />
+            </OnPlatform>
+        </Grid.Margin>
+
+        <Label
+            Grid.Column="1"
+            Grid.Row="3"
+            Style="{StaticResource MediumTextStyle}"
+            Text="QR Code Scanner"
+            WidthRequest="250" />
+
+
+        <StackLayout
+            Grid.Column="1"
+            Grid.Row="5"
+            Margin="0,10,0,0"
+            Orientation="Vertical">
+            <Label
+                Margin="0,20,0,0"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="Center"
+                Style="{StaticResource MediumTextStyle}"
+                Text="Information" />
+            <Label
+                Margin="0,20,0,0"
+                HorizontalOptions="StartAndExpand"
+                VerticalOptions="Center"
+                Style="{StaticResource MicroTextStyle}"
+                Text="{Binding ViewFriendlyLinearEquation}" />
+            <Label
+                Margin="0,20,0,0"
+                HorizontalOptions="StartAndExpand"
+                VerticalOptions="Center"
+                Style="{StaticResource MicroTextStyle}"
+                Text="{Binding BatchNumber}" />
+            <Label
+                Margin="0,20,0,0"
+                HorizontalOptions="StartAndExpand"
+                VerticalOptions="Center"
+                Style="{StaticResource MicroTextStyle}"
+                Text="{Binding ExpirationDate}" />
+
+            <StackLayout
+                Orientation="Horizontal"
+                Margin="0,30,0,0">
+                <Button
+                    HorizontalOptions="CenterAndExpand"
+                    Command="{Binding ScanCommand}"
+                    Text="Scan Linear Equation"
+                    WidthRequest="200"/>
+            </StackLayout>
         </StackLayout>
-    </ContentPage.Content>
+
+
+            <!--<StackLayout
+                Orientation="Horizontal"
+                Margin="0,30,0,0">
+                <Button
+                    Command="{Binding ScanCommand}"
+                    Text="Scan Linear Equation"
+                    WidthRequest="200"/>
+                <Label
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="Center"
+                    Style="{StaticResource MicroTextStyle}"
+                    Text="{Binding ViewFriendlyLinearEquation}" />
+            </StackLayout>-->
+
+
+        <!--<StackLayout Padding="10">
+            <Button Text="Scan QR Code" Command="{Binding ScanCommand}" />
+            <Label Text="{Binding ScannedResult}" FontSize="Medium" Margin="0,20,0,0" />
+        </StackLayout>-->
+
+        <!--<Button
+            Command="{Binding NavigateToHomeCommand}"
+            HorizontalOptions="Center"
+            Text="{xct:Translate Home}"
+            WidthRequest="200" />-->
+        <!--</StackLayout>-->
+        <ContentView
+            Grid.Column="0"
+            Grid.ColumnSpan="3"
+            Grid.Row="10"
+            VerticalOptions="End">
+            <views:StatusBarView />
+        </ContentView>
+    </Grid>
+
 
 </ContentPage>

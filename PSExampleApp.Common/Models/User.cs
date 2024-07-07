@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Org.BouncyCastle.Utilities.Date;
 
 namespace PSExampleApp.Common.Models
 {
@@ -10,7 +12,9 @@ namespace PSExampleApp.Common.Models
         {
             Intercept = 0.01696,
             Slope = 0.02704,
-            Unit = "mIU/L"
+            //BatchNumber = -1,
+            //SensorExpirationDate = DateTime.MinValue
+            //Unit = "mIU/L"
         };
         public List<MeasurementInfo> Measurements { get; set; } = new List<MeasurementInfo>();
         public string Password { get; set; }

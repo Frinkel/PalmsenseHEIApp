@@ -60,9 +60,22 @@ namespace PSExampleApp.Core.Services
             await _userRepository.UpdateUser(ActiveUser);
         }
 
+        public async Task UpdateUser()
+        {
+            await _userRepository.UpdateUser(ActiveUser);
+        }
+
         public async Task SaveUserAsync(string username)
         {
-            var user = new User { Name = username, Password = "123", Id = Guid.NewGuid(), IsAdmin = false };
+            var user = new User { Name = username, Password = "123", Id = Guid.NewGuid(), IsAdmin = false, UseMockData = false, UserLinearEquationConfiguration = 
+                new LinearEqConfiguration
+                {
+                    Intercept = 0.00000,
+                    Slope = 0.00000,
+                    BatchNumber = -1,
+                    SensorExpirationDate = DateTime.MinValue
+                }
+            };
             await _userRepository.UpdateUser(user);
 
             ActiveUser = user;

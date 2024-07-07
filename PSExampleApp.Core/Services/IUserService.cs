@@ -68,5 +68,7 @@ namespace PSExampleApp.Core.Services
         /// <param name="id"></param>
         /// <returns></returns>
         Task DeleteUserAsync(Guid id);
+
+        Task UpdateUser();
     }
 }
