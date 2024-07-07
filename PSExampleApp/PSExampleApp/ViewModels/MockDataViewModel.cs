@@ -119,7 +119,7 @@ namespace PSExampleApp.Forms.ViewModels
                     }
 
                     var measurement = await _loadSavePlatformService.LoadMeasurementFromFileAsync(result.FullPath);
-                    _messageService.ShortAlert(AppResources.Alert_MethodSaved);
+                    _messageService.ShortAlert("File loaded successfully.");
 
                     LoadMockData(measurement);
                     await Continue();

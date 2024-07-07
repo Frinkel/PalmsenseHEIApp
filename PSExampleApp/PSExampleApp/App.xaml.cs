@@ -37,7 +37,7 @@ namespace PSExampleApp.Forms
             {
                 applicationSettings = new ApplicationSettings
                 {
-                    Title = "Hei App",//"PS Example App", 
+                    Title = "HEI Therapeutics",//"PS Example App", 
                     Id = Guid.NewGuid(), 
                     BackgroundImage = ResourceHelper.GetImageAsByteArray(DefaultBackground)
                 };

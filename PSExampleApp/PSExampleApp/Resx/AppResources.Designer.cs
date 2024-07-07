@@ -520,7 +520,7 @@ namespace PSExampleApp.Forms.Resx {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to PS Example App.
+        ///   Looks up a localized string similar to HEI Therapeutics.
         /// </summary>
         public static string ExampleAppTitle {
             get {
