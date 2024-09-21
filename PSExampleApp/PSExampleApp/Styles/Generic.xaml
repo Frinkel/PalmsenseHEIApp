@@ -128,6 +128,14 @@
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="MicroTextStyleWhite" TargetType="Label">
+        <Setter Property="FontFamily" Value="SourceSansRegular" />
+        <Setter Property="FontSize" Value="{StaticResource FontSize20}" />
+        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+    </Style>
+
     <Style x:Key="SmallSubTextStyle" TargetType="Label">
         <Setter Property="FontAttributes" Value="Italic" />
         <Setter Property="FontFamily" Value="SourceSansLight" />

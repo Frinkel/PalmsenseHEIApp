@@ -22,10 +22,6 @@
             <local:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-
-    <ContentPage.BackgroundImageSource>
-        <Binding Path="BackgroundImage" Converter="{StaticResource ByteArrayToImageSourceConverter}" />
-    </ContentPage.BackgroundImageSource>
     
     <Grid>
         <StackLayout

@@ -26,10 +26,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <!--<ContentPage.BackgroundImageSource>
-        <Binding Path="BackgroundImage" Converter="{StaticResource ByteArrayToImageSourceConverter}" />
-    </ContentPage.BackgroundImageSource>-->
-
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="20" VerticalOptions="CenterAndExpand">
             <StackLayout>

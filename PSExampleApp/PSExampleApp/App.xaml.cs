@@ -55,7 +55,15 @@ namespace PSExampleApp.Forms
 
             InitializeComponent();
 
-            var navigationPage = new CustomNavigationPage(new HomeView() { BackgroundImageSource = ImageSource.FromStream(() => { return new MemoryStream(applicationSettings.BackgroundImage); }), })
+            var navigationPage = new CustomNavigationPage(new HomeView()
+            {
+                // This is where the background image is set.
+                //BackgroundImageSource = ImageSource.FromStream(() =>
+                //{
+                //    return new MemoryStream(applicationSettings.BackgroundImage); 
+
+                //}),
+            })
             {
                 BarBackgroundColor = Color.Transparent,
                 BackgroundColor = Color.Transparent,

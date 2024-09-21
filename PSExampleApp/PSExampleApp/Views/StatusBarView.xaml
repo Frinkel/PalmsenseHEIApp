@@ -32,7 +32,7 @@
                         HorizontalOptions="Start"
                         IsAnimationPlaying="True"
                         IsVisible="{Binding IsConnected, Converter={StaticResource InverseBool}}"
-                        Source="searchinganimation.gif"
+                        Source="searchinganimation.png"
                         VerticalOptions="Start"
                         WidthRequest="30" />
                     <ffimageloadingsvg:SvgCachedImage
@@ -44,7 +44,7 @@
                     <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
                         <Label
                             HorizontalOptions="Start"
-                            Style="{StaticResource MicroTextStyle}"
+                            Style="{StaticResource MicroTextStyleWhite}"
                             Text="{Binding StatusText}"
                             VerticalTextAlignment="Center" />
                         <Image

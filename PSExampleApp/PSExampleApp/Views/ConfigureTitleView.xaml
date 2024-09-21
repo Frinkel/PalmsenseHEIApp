@@ -19,10 +19,6 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.BackgroundImageSource>
-        <Binding Path="BackgroundImage" Converter="{StaticResource ByteArrayToImageSourceConverter}" />
-    </ContentPage.BackgroundImageSource>
-
     <ContentPage.Content>
         <Grid
             RowDefinitions="*,50,*,60,5,50,5,50,8*"

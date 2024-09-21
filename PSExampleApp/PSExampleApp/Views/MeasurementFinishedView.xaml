@@ -25,10 +25,6 @@
         <behaviors:OnDisappearingBehavior OnDisappearingCommand="{Binding OnPageDisappearingCommand}" />
     </ContentPage.Behaviors>
 
-    <ContentPage.BackgroundImageSource>
-        <Binding Path="BackgroundImage" Converter="{StaticResource ByteArrayToImageSourceConverter}" />
-    </ContentPage.BackgroundImageSource>
-
     <Grid>
         <Grid.Margin>
             <OnPlatform x:TypeArguments="Thickness">
