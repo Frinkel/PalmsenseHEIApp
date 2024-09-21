@@ -69,6 +69,16 @@ namespace PSExampleApp.Forms.ViewModels
             }
         }
 
+        public string ViewFriendlyBatchNumber
+        {
+            get
+            {
+                return !((_activeMeasurement.LinearEquationConfiguration.Intercept == 0.0 || _activeMeasurement.LinearEquationConfiguration.Slope == 0.0)) 
+                ? $"Batch Number: {_activeMeasurement.LinearEquationConfiguration.BatchNumber}"
+                : "No linear Eq Configured";
+            }
+        }
+
         private async void InitializeActiveMeasurement()
         {
             ActiveMeasurement = await _measurementService.GetActiveMeasurement().ConfigureAwait(false);

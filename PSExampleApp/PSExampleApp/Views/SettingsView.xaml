@@ -73,7 +73,7 @@
                 />
 
             </StackLayout>
-            <Button Grid.Column="1" Grid.Row="5" Command="{Binding ConfigureMethodCommand}" Text="{xct:Translate ConfigureMethod}" />
+            <!--<Button Grid.Column="1" Grid.Row="5" Command="{Binding ConfigureMethodCommand}" Text="{xct:Translate ConfigureMethod}" />-->
 
         </StackLayout>
 

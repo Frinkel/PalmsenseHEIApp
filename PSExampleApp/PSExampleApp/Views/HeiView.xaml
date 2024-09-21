@@ -55,14 +55,17 @@
                     Margin="0,0,0,10" />
                 <Label
                     Style="{StaticResource SmallTextStyle}"
+                    Text="{Binding ViewFriendlyBatchNumber}" 
+                    Margin="0,0,0,10" />
+                <Label
+                    Style="{StaticResource SmallTextStyle}"
                     Text="{Binding ViewFriendlyLinearEquation}"
                     Margin="0,0,0,10" />
                 <Label
                     Style="{StaticResource SmallTextStyle}"
-                    Text="{Binding ViewFriendlyTargetFrequency}"
+                    Text="{Binding ViewFriendlyTargetFrequency}" 
                     Margin="0,0,0,10" />
 
-                
             </StackLayout>
 
             <Button

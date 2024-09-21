@@ -72,7 +72,7 @@
 
     <!--Explicit Styles-->
     <Style x:Key="CustomPage" TargetType="ContentPage">
-        <Setter Property="Visual" Value="Material" />
+        <!--<Setter Property="Visual" Value="Material" />-->
         <Setter Property="NavigationPage.TitleView">
             <Setter.Value>
                 <views:TitleView />
