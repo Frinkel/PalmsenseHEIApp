@@ -18,5 +18,6 @@ namespace PSExampleApp.Common.Models
         };
         public List<MeasurementInfo> Measurements { get; set; } = new List<MeasurementInfo>();
         public string Password { get; set; }
+        public double TargetFrequency { get; set; } = 126;
     }
 }

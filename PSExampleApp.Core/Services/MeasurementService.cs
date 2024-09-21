@@ -26,19 +26,22 @@ namespace PSExampleApp.Core.Services
         private readonly IMeasurementRepository _measurementRepository;
         private readonly IUserService _userService;
         private HeavyMetalMeasurement _activeMeasurement;
+        private readonly IMessageService _messageService;
 
         public MeasurementService(
             IMeasurementRepository repository,
             InstrumentService instrumentService,
             ILoadSavePlatformService loadSavePlatformService,
             ILoadAssetsService loadAssetsService,
-            IUserService userService)
+            IUserService userService,
+            IMessageService messageService)
         {
             _measurementRepository = repository;
             _instrumentService = instrumentService;
             _loadSavePlatformService = loadSavePlatformService;
             _loadAssetsService = loadAssetsService;
             _userService = userService;
+            _messageService = messageService;
         }
 
         public event SimpleCurveStartReceivingDataHandler DataReceived
@@ -158,6 +161,8 @@ namespace PSExampleApp.Core.Services
                 Id = id,
                 Name = savedMeasurement.Name,
                 HeiConcentration = savedMeasurement.HeiConcentration,
+                LinearEquationConfiguration = savedMeasurement.LinearEquationConfiguration,
+                TargetFrequency = savedMeasurement.TargetFrequency,
             };
 
             using (var stream = new MemoryStream(savedMeasurement.SerializedMeasurement))
@@ -203,6 +208,8 @@ namespace PSExampleApp.Core.Services
                 Id = measurement.Id,
                 Name = measurement.Name,
                 HeiConcentration = measurement.HeiConcentration,
+                LinearEquationConfiguration = _userService.ActiveUser.UserLinearEquationConfiguration,
+                TargetFrequency = _userService.ActiveUser.TargetFrequency,
             };
 
             try
@@ -288,6 +295,7 @@ namespace PSExampleApp.Core.Services
             }
             else
             {
+                _messageService.ShortAlert($"Frequency {targetFrequency} Hz not found.");
                 Debug.WriteLine($"Frequency {targetFrequency} Hz not found.");
                 throw new Exception($"Frequency {targetFrequency} Hz not found.");
             }

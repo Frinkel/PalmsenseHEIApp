@@ -26,9 +26,9 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <ContentPage.BackgroundImageSource>
+    <!--<ContentPage.BackgroundImageSource>
         <Binding Path="BackgroundImage" Converter="{StaticResource ByteArrayToImageSourceConverter}" />
-    </ContentPage.BackgroundImageSource>
+    </ContentPage.BackgroundImageSource>-->
 
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="20" VerticalOptions="CenterAndExpand">
@@ -48,6 +48,25 @@
                     Style="{StaticResource LargeTextStyle}"
                     Text="{Binding ViewFriendlyConcentration}"
                     Margin="0,20,0,20" />
+            </StackLayout>
+
+            <StackLayout
+                Margin="0,40,0,0">
+                
+                <Label
+                    Style="{StaticResource SmallTextStyle}"
+                    Text="Sensor information:"
+                    Margin="0,0,0,10" />
+                <Label
+                    Style="{StaticResource SmallTextStyle}"
+                    Text="{Binding ViewFriendlyLinearEquation}"
+                    Margin="0,0,0,10" />
+                <Label
+                    Style="{StaticResource SmallTextStyle}"
+                    Text="{Binding ViewFriendlyTargetFrequency}"
+                    Margin="0,0,0,10" />
+
+                
             </StackLayout>
 
             <Button

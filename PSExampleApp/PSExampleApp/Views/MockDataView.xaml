@@ -28,10 +28,6 @@
 
         <StackLayout Spacing="20" Padding="20" VerticalOptions="CenterAndExpand">
             <StackLayout>
-
-                <Label Text="Mock Data View" 
-                       HorizontalOptions="Center" VerticalOptions="Center"
-                       TextColor="White" Style="{StaticResource MediumTextStyle}" />
                 <Button Text="Select Data"
                         Command="{Binding SelectDataCommand}" 
                         HorizontalOptions="Center" VerticalOptions="Center"

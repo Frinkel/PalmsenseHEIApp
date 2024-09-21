@@ -22,12 +22,12 @@ namespace PSExampleApp.Droid.Services
                 else if (DeviceInfo.Version.Major >= 10 && DeviceInfo.Version.Minor <= 11)
                 {
                     permissionList.Add((Android.Manifest.Permission.Bluetooth, true));
-                    permissionList.Add((Android.Manifest.Permission.AccessFineLocation, true));
+                    //permissionList.Add((Android.Manifest.Permission.AccessFineLocation, true));
                 }
                 else
                 {
                     permissionList.Add((Android.Manifest.Permission.Bluetooth, true));
-                    permissionList.Add((Android.Manifest.Permission.AccessCoarseLocation, true));
+                    //permissionList.Add((Android.Manifest.Permission.AccessCoarseLocation, true));
                 }
 
                 return permissionList.ToArray();

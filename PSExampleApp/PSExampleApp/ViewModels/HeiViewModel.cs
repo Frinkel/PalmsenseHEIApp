@@ -1,24 +1,13 @@
-﻿using FFImageLoading;
-using PalmSens.Comm;
-using PalmSens.Core.Simplified.XF.Application.Services;
-using PalmSens.Plottables;
+﻿using PalmSens.Core.Simplified.XF.Application.Services;
 using PSExampleApp.Common.Models;
 using PSExampleApp.Core.Services;
 using PSExampleApp.Forms.Navigation;
-using PSExampleApp.Forms.Resx;
-using PSExampleApp.Forms.Views;
 using Rg.Plugins.Popup.Contracts;
 using Rg.Plugins.Popup.Services;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.CommunityToolkit.ObjectModel;
-using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace PSExampleApp.Forms.ViewModels
 {
@@ -59,6 +48,24 @@ namespace PSExampleApp.Forms.ViewModels
                     OnPropertyChanged(nameof(ActiveMeasurement));
                     OnPropertyChanged(nameof(ViewFriendlyConcentration));
                 }
+            }
+        }
+
+        public string ViewFriendlyLinearEquation
+        {
+            get
+            {
+                return (!(_activeMeasurement.LinearEquationConfiguration.Intercept == 0.0 || _activeMeasurement.LinearEquationConfiguration.Slope == 0.0))
+                    ? $"Linear Equation: y = {_activeMeasurement.LinearEquationConfiguration.Intercept} + {_activeMeasurement.LinearEquationConfiguration.Slope} * x"
+                    : "No Linear Eq Configured.";
+            }
+        }
+
+        public string ViewFriendlyTargetFrequency
+        {
+            get
+            {
+                return $"Target frequency: {_activeMeasurement.TargetFrequency}";
             }
         }
 

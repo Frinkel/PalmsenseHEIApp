@@ -31,5 +31,15 @@ namespace PSExampleApp.Common.Models
         /// Gets or sets the concentration used by Hei Theraputics
         /// </summary>
         public double HeiConcentration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the linear configuration used for the measurement
+        /// </summary>
+        public LinearEqConfiguration LinearEquationConfiguration  { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target frequency usen for the measurement
+        /// </summary>
+        public double TargetFrequency { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using PSExampleApp.Forms.ViewModels;
+﻿using PalmSens.Core.Simplified.XF.Application.Services;
+using PSExampleApp.Forms.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,5 @@ namespace PSExampleApp.Forms.Views
             BindingContext = App.GetViewModel<SettingsViewModel>();
             InitializeComponent ();
 		}
-	}
+    }
 }

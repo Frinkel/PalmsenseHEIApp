@@ -142,7 +142,7 @@ namespace PSExampleApp.Forms.ViewModels
                 ActiveMeasurement = MockHeavyMetalMeasurement(mockMeasurement);
                 _measurementService.SetActiveMeasurement(ActiveMeasurement);
 
-                double targetFrequency = 126.0;
+                double targetFrequency = _userService.ActiveUser.TargetFrequency;
                 _measurementService.HeiCalculateConcentration(targetFrequency);
 
                 MeasurementIsFinished = true;
@@ -168,7 +168,7 @@ namespace PSExampleApp.Forms.ViewModels
         private HeavyMetalMeasurement MockHeavyMetalMeasurement(SimpleMeasurement mockMeasurement)
         {
 
-            var uniqueName = GenerateUniqueName("Mock Experiment");
+            var uniqueName = GenerateUniqueName("Mock Measurement");
 
             var someMeasurement= new HeavyMetalMeasurement
             {
@@ -178,7 +178,9 @@ namespace PSExampleApp.Forms.ViewModels
                 Configuration = new MeasurementConfiguration(),
                 Measurement = mockMeasurement,
                 MeasurementDate = DateTime.Now.Date,
-                MeasurementImages = new List<byte[]>()
+                MeasurementImages = new List<byte[]>(),
+                LinearEquationConfiguration = _userService.ActiveUser.UserLinearEquationConfiguration,
+                TargetFrequency = _userService.ActiveUser.TargetFrequency
             };
 
             return someMeasurement;

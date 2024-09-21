@@ -19,16 +19,18 @@ namespace PSExampleApp.Forms.ViewModels
         private readonly IDeviceService _deviceService;
         private readonly IMeasurementService _measurementService;
         private readonly IMessageService _messageService;
+        private readonly IUserService _userService;
         private Countdown _countdown = new Countdown();
 
         private bool _measurementFinished = false;
         private double _progress;
         private int _progressPercentage;
 
-        public RunMeasurementViewModel(IMeasurementService measurementService, IMessageService messageService, IDeviceService deviceService, IAppConfigurationService appConfigurationService) : base(appConfigurationService)
+        public RunMeasurementViewModel(IMeasurementService measurementService, IMessageService messageService, IDeviceService deviceService, IAppConfigurationService appConfigurationService, IUserService userService) : base(appConfigurationService)
         {
             Progress = 0;
             _deviceService = deviceService;
+            _userService = userService;
             _messageService = messageService;
             _measurementService = measurementService;
             _measurementService.MeasurementStarted += _measurementService_MeasurementStarted;
@@ -82,7 +84,7 @@ namespace PSExampleApp.Forms.ViewModels
             _messageService.ShortAlert("Measurement ended");
             _countdown.Ticked -= OnCountdownTicked;
 
-            double targetFrequency = 126.0;
+            double targetFrequency = _userService.ActiveUser.TargetFrequency;
             _measurementService.HeiCalculateConcentration(targetFrequency);
 
             Progress = 1;
@@ -94,6 +96,8 @@ namespace PSExampleApp.Forms.ViewModels
         {
             //The continue will trigger the save of the measurement. //TODO maybe add cancel in case user doesn't want to save
             ActiveMeasurement.MeasurementDate = DateTime.Now.Date;
+            ActiveMeasurement.LinearEquationConfiguration = _userService.ActiveUser.UserLinearEquationConfiguration;
+            ActiveMeasurement.TargetFrequency = _userService.ActiveUser.TargetFrequency;
             await _measurementService.SaveMeasurement(ActiveMeasurement);
             await NavigationDispatcher.Push(NavigationViewType.HeiView);
         }

@@ -56,5 +56,15 @@
                 _heiConcentration = Math.Log10(value);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the linear configuration used for the measurement
+        /// </summary>
+        public LinearEqConfiguration LinearEquationConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target frequency usen for the measurement
+        /// </summary>
+        public double TargetFrequency { get; set; }
     }
 }

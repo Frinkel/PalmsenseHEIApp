@@ -32,6 +32,9 @@ namespace PSExampleApp.Forms.ViewModels
             _lineSeries = new LineSeries()
             {
                 Title = "Concentration over time",
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 6,
+                //MarkerFill = OxyColors.Red
             };
 
             foreach (var mInfo in _userService.ActiveUser.Measurements)

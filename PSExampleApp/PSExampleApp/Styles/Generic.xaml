@@ -13,14 +13,14 @@
     <!--Implict Styles-->
     <Style TargetType="Frame">
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="BorderColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="BorderColor" Value="{StaticResource BlackColor}" />
         <Setter Property="CornerRadius" Value="3"/>
         <Setter Property="HasShadow" Value="False"/>
     </Style>
 
 
     <Style TargetType="Label">
-        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
     </Style>
 
     <Style TargetType="ImageButton">
@@ -28,9 +28,9 @@
     </Style>
 
     <Style TargetType="Button">
-        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
-        <Setter Property="BorderColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="BorderColor" Value="{StaticResource BlackColor}" />
         <Setter Property="BorderWidth" Value="2" />
         <Setter Property="HeightRequest" Value="{StaticResource DefaultControlButtonHeight}" />
         <Setter Property="WidthRequest" Value="{StaticResource DefaultControlWidth}" />
@@ -48,20 +48,20 @@
     </Style>
 
     <Style TargetType="RadioButton">
-        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CheckedStates">
                     <VisualState x:Name="Checked">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                            <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
                             <Setter Property="Opacity" Value="1" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Unchecked">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+                            <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
                             <Setter Property="Opacity" Value="0.5" />
                         </VisualState.Setters>
                     </VisualState>
@@ -78,6 +78,7 @@
                 <views:TitleView />
             </Setter.Value>
         </Setter>
+        <Setter Property="BackgroundColor" Value="#fffcf8" />
     </Style>
 
     <Style x:Key="StatusBarFrame" TargetType="Frame">
@@ -88,7 +89,7 @@
     <Style x:Key="TitleStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="SourceSansSemiBold" />
         <Setter Property="FontSize" Value="{StaticResource FontSize36}" />
-        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
         <Setter Property="FontAttributes" Value="Bold" />
@@ -98,7 +99,7 @@
     <Style x:Key="LargeTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="SourceSansRegular" />
         <Setter Property="FontSize" Value="{StaticResource FontSize36}" />
-        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
@@ -106,7 +107,7 @@
     <Style x:Key="MediumTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="SourceSansRegular" />
         <Setter Property="FontSize" Value="{StaticResource FontSize28}" />
-        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
@@ -114,7 +115,7 @@
     <Style x:Key="SmallTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="SourceSansRegular" />
         <Setter Property="FontSize" Value="{StaticResource FontSize24}" />
-        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
@@ -122,7 +123,7 @@
     <Style x:Key="MicroTextStyle" TargetType="Label">
         <Setter Property="FontFamily" Value="SourceSansRegular" />
         <Setter Property="FontSize" Value="{StaticResource FontSize20}" />
-        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
@@ -131,7 +132,7 @@
         <Setter Property="FontAttributes" Value="Italic" />
         <Setter Property="FontFamily" Value="SourceSansLight" />
         <Setter Property="FontSize" Value="{StaticResource FontSize24}" />
-        <Setter Property="TextColor" Value="{StaticResource WhiteColor}" />
+        <Setter Property="TextColor" Value="{StaticResource BlackColor}" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
     </Style>
